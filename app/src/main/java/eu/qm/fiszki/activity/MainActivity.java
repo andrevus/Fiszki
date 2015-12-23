@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout;
+
 import java.util.Arrays;
 
 import eu.qm.fiszki.AlarmReceiver;
@@ -57,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
     public int rowId;
     public AlarmReceiver alarm;
     public Toolbar toolbar;
+    public ImageView addNewCategories;
+    public ImageView addNewWord;
+    public ImageView closeAddButton;
+    public FABToolbarLayout fab_all;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +76,11 @@ public class MainActivity extends AppCompatActivity {
         myDb = new DBAdapter(this);
         context = this;
         listView = (ListView) findViewById(R.id.listView);
+        addNewCategories = (ImageView) findViewById(R.id.add_category);
+        addNewWord = (ImageView) findViewById(R.id.add_word);
+        closeAddButton = (ImageView) findViewById(R.id.close);
+        fab_all = (FABToolbarLayout) findViewById(R.id.fab_all);
+        fab = (FloatingActionButton) findViewById(R.id.fabtoolbar_fab);
         emptyDBImage = (ImageView) findViewById(R.id.emptyDBImage);
         emptyDBText = (TextView) findViewById(R.id.emptyDBText);
         emptyDBImage.setImageResource(R.drawable.emptydb);
@@ -83,14 +94,7 @@ public class MainActivity extends AppCompatActivity {
         listViewSelect();
         toolbarMainActivity();
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent myIntent = new Intent(MainActivity.this, AddWordActivity.class);
-                startActivity(myIntent);
-            }
-        });
+
     }
 
     @Override
@@ -121,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             selectedItem[earlierPosition].setBackgroundColor(getResources().getColor(R.color.default_color));
-            fab.setVisibility(View.VISIBLE);
+            fab.show();
             clickedItem[selectPosition] = false;
             selectedItem[selectPosition].setSelected(false);
             toolbarMainActivity();
@@ -152,7 +156,9 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                if(fab_all.isToolbar()){
+                    fab_all.hide();
+                }
                 rowId = (int) id;
                 selectPosition = position;
                 editedItem = (ItemAdapter) parent.getAdapter();
@@ -164,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                     clickedItem[selectPosition] = true;
                     selectedItem[selectPosition].setBackgroundColor(getResources().getColor(R.color.pressed_color));
                     selectedItem[selectPosition].setSelected(true);
-                    fab.setVisibility(View.INVISIBLE);
+                    fab.hide();
                     earlierPosition = selectPosition;
                     toolbarSelected();
                 } else if (!clickedItem[selectPosition]) {
@@ -175,12 +181,12 @@ public class MainActivity extends AppCompatActivity {
                     clickedItem[selectPosition] = true;
                     selectedItem[selectPosition].setBackgroundColor(getResources().getColor(R.color.pressed_color));
                     selectedItem[selectPosition].setSelected(true);
-                    fab.setVisibility(View.INVISIBLE);
+                    fab.hide();
                     earlierPosition = selectPosition;
                     toolbarSelected();
                 } else {
                     selectedItem[earlierPosition].setBackgroundColor(getResources().getColor(R.color.default_color));
-                    fab.setVisibility(View.VISIBLE);
+                    fab.show();
                     clickedItem[selectPosition] = false;
                     selectedItem[selectPosition].setSelected(false);
                     toolbarMainActivity();
@@ -237,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
                             listViewDelete();
                         } else if (id == android.R.id.home) {
                             selectedItem[earlierPosition].setBackgroundColor(getResources().getColor(R.color.default_color));
-                            fab.setVisibility(View.VISIBLE);
+                            fab.show();
                             clickedItem[selectPosition] = false;
                             selectedItem[selectPosition].setSelected(false);
                             toolbarMainActivity();
@@ -269,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
                         myDb.updateAdapter(rowId, editOriginal.getText().toString(),
                                 editTranslate.getText().toString());
                         selectedItem[earlierPosition].setBackgroundColor(getResources().getColor(R.color.default_color));
-                        fab.setVisibility(View.VISIBLE);
+                        fab.show();
                         clickedItem[selectPosition] = false;
                         selectedItem[selectPosition].setSelected(false);
                         listViewPopulate();
@@ -283,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
                             myDb.updateAdapter(rowId, editOriginal.getText().toString(),
                                     editTranslate.getText().toString());
                             //selectedItem[earlierPosition].setBackgroundColor(getResources().getColor(R.color.default_color));
-                            fab.setVisibility(View.VISIBLE);
+                            fab.show();
                             clickedItem[selectPosition] = false;
                             //selectedItem[selectPosition].setSelected(false);
                             listViewPopulate();
@@ -321,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
                     emptyDBImage.setVisibility(View.VISIBLE);
                     emptyDBText.setVisibility(View.VISIBLE);
                     listView.setVisibility(View.INVISIBLE);
-                    fab.setVisibility(View.VISIBLE);
+                    fab.show();
                     myDb.updateRow(settings.notificationStatus, 0);
                     myDb.updateRow(settings.notificationPosition, 0);
                     alarm.close(settings.manager,context,settings.pendingIntent);
@@ -346,6 +352,22 @@ public class MainActivity extends AppCompatActivity {
         selectedItem = new View[x+1];
         clickedItem = new boolean[x+1];
         Arrays.fill(clickedItem, Boolean.FALSE);
+    }
+
+    public void add_new_categories(View view) {
+        fab_all.hide();
+        Intent addNewCategory = new Intent(this,AddCategoryActivity.class);
+        startActivity(addNewCategory);
+    }
+
+    public void add_new_word(View view) {
+        fab_all.hide();
+        Intent addNewWord = new Intent(this,AddWordActivity.class);
+        startActivity(addNewWord);
+    }
+
+    public void close_add_button(View view) {
+        fab_all.hide();
     }
 }
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.AddCategoryActivity">
+
+        <item
+            android:id="@+id/add_new_category_title"
+            android:title="@string/add_new_category_menu"
+            android:icon="@drawable/plusbutton"
+            android:orderInCategory="100"
+            app:showAsAction="always"/>
+
+</menu>

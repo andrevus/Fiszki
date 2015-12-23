@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_new_category_title">Dodaj nową kategorie:</string>
+
+    <string name="add_new_category_name">Nazwa kategorii:</string>
+
+</resources>
