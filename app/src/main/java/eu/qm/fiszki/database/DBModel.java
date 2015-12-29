@@ -14,6 +14,12 @@ public class DBModel {
     public static final String KEY_WORD = "word";
     public static final String KEY_TRANSLATION = "translation";
     public static final String KEY_PRIORITY = "priority";
+    public static final String KEY_CATEGORY = "category";
+
+    //FLASHCARD CATEGORY
+    public static final String CATEGORY_ROWID = "_id";
+    public static final String CATEGORY_NAME = "name";
+
     //SYSTEM SETTINGS
     public static final String SETTINGS_ROWID = "_id";
     public static final String SETTINGS_NAME = "name";
@@ -26,6 +32,7 @@ public class DBModel {
     // DataBase info:
     public static final String DATABASE_NAME = "dbQM";
     public static final String DATABASE_TABLE = "mainFiszki";
+    public static final String CATEGORY_TABLE = "flashCardCategory";
     public static final String SETTINGS_TABLE = "applicationSettings";
     public static final int DATABASE_VERSION = 2;
 
@@ -34,15 +41,25 @@ public class DBModel {
             "CREATE TABLE " + DATABASE_TABLE
                     + " (" + KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + KEY_WORD + " TEXT NOT NULL, "
-                    + KEY_TRANSLATION + " TEXT NOT NULL,"
-                    + KEY_PRIORITY + " INTEGER NOT NULL"
-                    + ");";
+                    + KEY_TRANSLATION + " TEXT NOT NULL, "
+                    + KEY_PRIORITY + " INTEGER NOT NULL, "
+                    + KEY_CATEGORY + " INTEGER, FOREIGN KEY( " + KEY_CATEGORY + ") REFERENCES "
+                    + CATEGORY_TABLE + " (" + CATEGORY_ROWID + ")"
+                    +");";
+
+    public static final String DATABASE_CREATE_CATEGORY =
+            "CREATE TABLE " + CATEGORY_TABLE
+                    + " (" + CATEGORY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + CATEGORY_NAME + " TEXT NOT NULL"
+                    +");";
+
     public static final String SETTINGS_CREATE_SQL =
             "CREATE TABLE " + SETTINGS_TABLE
                     + " (" + SETTINGS_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + SETTINGS_NAME + " TEXT NOT NULL, "
                     + SETTINGS_STATUS + " INTEGER "
                     +");";
+
     public static final String FILL_SETTINGS_SQL =
             "INSERT INTO "+ SETTINGS_TABLE +" VALUES(1, 'notification', 0)";
     public static final String SECOND_FILL_SETTINGS_SQL =
