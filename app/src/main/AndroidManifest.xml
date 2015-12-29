@@ -54,7 +54,7 @@
 
         <activity
             android:name=".activity.AddCategoryActivity"
-            android:label="@string/title_activity_add_categories"
+            android:label="@string/add_new_category_title"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

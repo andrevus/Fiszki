@@ -8,12 +8,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -23,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout;
 
@@ -78,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listView);
         addNewCategories = (ImageView) findViewById(R.id.add_category);
         addNewWord = (ImageView) findViewById(R.id.add_word);
-        closeAddButton = (ImageView) findViewById(R.id.close);
         fab_all = (FABToolbarLayout) findViewById(R.id.fab_all);
         fab = (FloatingActionButton) findViewById(R.id.fabtoolbar_fab);
         emptyDBImage = (ImageView) findViewById(R.id.emptyDBImage);
@@ -153,10 +155,30 @@ public class MainActivity extends AppCompatActivity {
         editTranslate = (EditText) dialog.findViewById(R.id.editTranslate);
         dialogButton = (Button) dialog.findViewById(R.id.editButton);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        emptyDBImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(fab_all.isToolbar()){
+            public void onClick(View v) {
+                if(fab_all.isShown()){
+                    fab_all.hide();
+                }
+            }
+        });
+
+        listView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(fab_all.isShown()){
+                    fab_all.hide();
+                }
+                return false;
+            }
+        });
+
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (fab_all.isToolbar()) {
                     fab_all.hide();
                 }
                 rowId = (int) id;
@@ -191,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
                     selectedItem[selectPosition].setSelected(false);
                     toolbarMainActivity();
                 }
+                return true;
             }
         });
     }
@@ -330,7 +353,7 @@ public class MainActivity extends AppCompatActivity {
                     fab.show();
                     myDb.updateRow(settings.notificationStatus, 0);
                     myDb.updateRow(settings.notificationPosition, 0);
-                    alarm.close(settings.manager,context,settings.pendingIntent);
+                    alarm.close(settings.manager, context, settings.pendingIntent);
                     toolbarMainActivity();
                 }
             }
