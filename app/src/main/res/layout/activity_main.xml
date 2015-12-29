@@ -41,6 +41,9 @@
         android:layout_marginRight="20dp"
         />
 
+
+
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -71,11 +74,12 @@
         app:containerId="@+id/fabtoolbar_container"
         app:fabToolbarId="@+id/fabtoolbar_toolbar">
 
-        <ListView
+        <ExpandableListView
             android:layout_marginTop="?attr/actionBarSize"
-            android:id="@+id/listView"
+            android:id="@+id/list"
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:groupIndicator="@null" />
 
         <RelativeLayout
             android:id="@id/fabtoolbar_container"

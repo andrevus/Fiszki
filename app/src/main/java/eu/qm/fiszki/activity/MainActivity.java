@@ -13,6 +13,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -22,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,10 +31,12 @@ import android.widget.Toast;
 
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import eu.qm.fiszki.AlarmReceiver;
 import eu.qm.fiszki.Alert;
+import eu.qm.fiszki.MyExpandableAdapter;
 import eu.qm.fiszki.R;
 import eu.qm.fiszki.database.DBAdapter;
 import eu.qm.fiszki.database.DBModel;
@@ -67,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
     public ImageView closeAddButton;
     public FABToolbarLayout fab_all;
 
+    private ArrayList<String> parentItems = new ArrayList<String>();
+    private ArrayList<Object> childItems = new ArrayList<Object>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         openDataBase = new DBStatus();
         myDb = new DBAdapter(this);
         context = this;
-        listView = (ListView) findViewById(R.id.listView);
         addNewCategories = (ImageView) findViewById(R.id.add_category);
         addNewWord = (ImageView) findViewById(R.id.add_word);
         fab_all = (FABToolbarLayout) findViewById(R.id.fab_all);
@@ -92,12 +98,98 @@ public class MainActivity extends AppCompatActivity {
         settings.manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         openDataBase.openDB(myDb);
 
-        listViewPopulate();
-        listViewSelect();
+
         toolbarMainActivity();
 
+        ExpandableListView expandableList = (ExpandableListView) findViewById(R.id.list);
+
+        expandableList.setDividerHeight(2);
+        expandableList.setGroupIndicator(null);
+        expandableList.setClickable(true);
+
+        setGroupParents();
+        setChildData();
+
+        MyExpandableAdapter adapter = new MyExpandableAdapter(parentItems, childItems);
+
+        adapter.setInflater((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE), this);
+        expandableList.setAdapter(adapter);
 
     }
+
+    public void setGroupParents() {
+        parentItems.add("Android");
+        parentItems.add("Core Java");
+        parentItems.add("Desktop Java");
+        parentItems.add("Enterprise Java");
+
+    }
+
+
+    public void setChildData() {
+
+        // Android
+
+        ArrayList<String> child = new ArrayList<String>();
+
+        child.add("Core");
+
+        child.add("Games");
+
+        childItems.add(child);
+
+
+
+        // Core Java
+
+        child = new ArrayList<String>();
+
+        child.add("Apache");
+
+        child.add("Applet");
+
+        child.add("AspectJ");
+
+        child.add("Beans");
+
+        child.add("Crypto");
+
+        childItems.add(child);
+
+
+
+        // Desktop Java
+
+        child = new ArrayList<String>();
+
+        child.add("jesus");
+
+        child.add("gaben");
+
+        child.add("gaben");
+
+        child.add("hitler");
+
+        childItems.add(child);
+
+
+
+        // Enterprise Java
+
+        child = new ArrayList<String>();
+
+        child.add("EJB3");
+
+        child.add("GWT");
+
+        child.add("Hibernate");
+
+        child.add("JSP");
+
+        childItems.add(child);
+
+    }
+
 
     @Override
     public void onResume() {
@@ -107,7 +199,6 @@ public class MainActivity extends AppCompatActivity {
         if (myDb.getAllRows().getCount() > 0) {
             emptyDBImage.setVisibility(View.INVISIBLE);
             emptyDBText.setVisibility(View.INVISIBLE);
-            listView.setVisibility(View.VISIBLE);
         }
     }
 
