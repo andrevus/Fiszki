@@ -170,6 +170,7 @@ public class DBAdapter {
 
         @Override
         public void onCreate(SQLiteDatabase _db) {
+            _db.execSQL(DBModel.DATABASE_CREATE_CATEGORY);
             _db.execSQL(DBModel.DATABASE_CREATE_SQL);
             _db.execSQL(DBModel.SETTINGS_CREATE_SQL);
             _db.execSQL(DBModel.FILL_SETTINGS_SQL);
@@ -185,11 +186,10 @@ public class DBAdapter {
         //               " SET " + DBModel.KEY_PRIORITY + " = 1 " +
         //               " WHERE " + DBModel.KEY_PRIORITY + " IS NULL");
 
+            _db.execSQL(DBModel.DATABASE_CREATE_CATEGORY);
             _db.execSQL("ALTER TABLE " + DBModel.DATABASE_TABLE +
-                    " ADD COLUMN " + DBModel.KEY_PRIORITY + " INTEGER");
-            _db.execSQL("UPDATE " + DBModel.DATABASE_TABLE +
-                    " SET " + DBModel.KEY_PRIORITY + " = 1 " +
-                    " WHERE " + DBModel.KEY_PRIORITY + " IS NULL");
+                    " ADD COLUMN " + DBModel.KEY_CATEGORY + " INTEGER, FOREIGN KEY( " + DBModel.KEY_CATEGORY + ") REFERENCES "
+                    + DBModel.CATEGORY_TABLE + " (" + DBModel.CATEGORY_ROWID + ")");
         }
     }
 }
