@@ -68,7 +68,7 @@ public class AddWordActivity extends AppCompatActivity {
         if (id == R.id.action_add_new_word) {
             if (inputWord.getText().toString().isEmpty() || inputTranslation.getText().toString().isEmpty()) {
                 alert.buildAlert(getString(R.string.alert_title), getString(R.string.alert_message_onEmptyFields), getString(R.string.button_action_ok), AddWordActivity.this);
-            } else if (myDb.getRowValue(DBModel.KEY_WORD, inputWord.getText().toString()) == true) {
+            } else if (myDb.getRowValue(DBModel.KEY_WORD, inputWord.getText().toString())) {
                 alert.buildAlert(getString(R.string.alert_title), getString(R.string.alert_message_onRecordExist), getString(R.string.button_action_ok), AddWordActivity.this);
                 inputWord.setText(null);
                 inputTranslation.setText(null);

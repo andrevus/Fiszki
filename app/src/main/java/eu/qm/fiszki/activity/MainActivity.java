@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     public ImageView addNewWord;
     public ImageView closeAddButton;
     public FABToolbarLayout fab_all;
+    public Cursor categoryCursor;
 
     private ArrayList<String> parentItems = new ArrayList<String>();
     private ArrayList<Object> childItems = new ArrayList<Object>();
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         expandableList.setGroupIndicator(null);
         expandableList.setClickable(true);
 
-        setGroupParents();
+        setCategories();
         setChildData();
 
         MyExpandableAdapter adapter = new MyExpandableAdapter(parentItems, childItems);
@@ -120,18 +121,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void setGroupParents() {
-        parentItems.add("Android");
-        parentItems.add("Core Java");
-        parentItems.add("Desktop Java");
-        parentItems.add("Enterprise Java");
-
+    public void setCategories() {
+        if (myDb.getAllCategories().getCount() > 0) {
+            int x = 1;
+            do{
+               parentItems.add(myDb.getCategories(x).getString(1));
+                x++;
+            }while(x<1+myDb.getAllCategories().getCount());
+        }
     }
 
 
     public void setChildData() {
 
-        // Android
 
         ArrayList<String> child = new ArrayList<String>();
 
@@ -141,55 +143,6 @@ public class MainActivity extends AppCompatActivity {
 
         childItems.add(child);
 
-
-
-        // Core Java
-
-        child = new ArrayList<String>();
-
-        child.add("Apache");
-
-        child.add("Applet");
-
-        child.add("AspectJ");
-
-        child.add("Beans");
-
-        child.add("Crypto");
-
-        childItems.add(child);
-
-
-
-        // Desktop Java
-
-        child = new ArrayList<String>();
-
-        child.add("jesus");
-
-        child.add("gaben");
-
-        child.add("gaben");
-
-        child.add("hitler");
-
-        childItems.add(child);
-
-
-
-        // Enterprise Java
-
-        child = new ArrayList<String>();
-
-        child.add("EJB3");
-
-        child.add("GWT");
-
-        child.add("Hibernate");
-
-        child.add("JSP");
-
-        childItems.add(child);
 
     }
 

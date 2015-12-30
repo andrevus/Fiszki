@@ -47,6 +47,25 @@ public class DBAdapter {
         }
         return c;
     }
+    public boolean getCategoryValue(String column, String text) {
+        Cursor c = db.query(false, DBModel.CATEGORY_TABLE, DBModel.ALL_KEYS_CATEGORIES,
+                column +"="+ "'"+text+"'", null, null, null, null, null);
+        if (c.getCount()>0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    public Cursor getCategories(int id) {
+        String where = DBModel.CATEGORY_ROWID+" = "+id;
+        Cursor c = db.query(true, DBModel.CATEGORY_TABLE, DBModel.ALL_KEYS_CATEGORIES,
+                where, null, null, null, null, "1");
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
 
     //FLASHCARD TABLE OPERATIONS
     public long insertRow(String word, String translate, int priority) {
@@ -172,6 +191,7 @@ public class DBAdapter {
         public void onCreate(SQLiteDatabase _db) {
             _db.execSQL(DBModel.DATABASE_CREATE_SQL);
             _db.execSQL(DBModel.SETTINGS_CREATE_SQL);
+            _db.execSQL(DBModel.DATABASE_CREATE_CATEGORY);
             _db.execSQL(DBModel.FILL_SETTINGS_SQL);
             _db.execSQL(DBModel.SECOND_FILL_SETTINGS_SQL);
             _db.execSQL(DBModel.THIRD_Fill_SETTINGS_SQL);

@@ -35,5 +35,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="25dp"
-        android:inputType="textImeMultiLine"/>
+        android:inputType="textImeMultiLine"
+        android:imeOptions="actionDone"/>
 </RelativeLayout>
