@@ -192,7 +192,6 @@ public class DBAdapter {
             _db.execSQL(DBModel.DATABASE_CREATE_CATEGORY);
             _db.execSQL(DBModel.DATABASE_CREATE_SQL);
             _db.execSQL(DBModel.SETTINGS_CREATE_SQL);
-            _db.execSQL(DBModel.DATABASE_CREATE_CATEGORY);
             _db.execSQL(DBModel.FILL_SETTINGS_SQL);
             _db.execSQL(DBModel.SECOND_FILL_SETTINGS_SQL);
             _db.execSQL(DBModel.THIRD_Fill_SETTINGS_SQL);

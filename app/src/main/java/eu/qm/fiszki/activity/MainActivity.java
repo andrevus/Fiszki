@@ -134,16 +134,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void setChildData() {
 
-
-        ArrayList<String> child = new ArrayList<String>();
-
-        child.add("Core");
-
-        child.add("Games");
-
-        childItems.add(child);
-
-
+        if(myDb.getAllRows().getCount()>0) {
+            int x = 1;
+            do {
+                ArrayList<String> child = new ArrayList<String>();
+                for(int i=0; i==myDb.getAllRows().getCount();i++){
+                    if(myDb.getRow(i).getInt(4)==myDb.getCategories(x).getInt(0)){
+                        child.add(myDb.getRow(i).getString(1));
+                    }
+                }
+                childItems.add(child);
+                x++;
+            }while(x<1+myDb.getAllCategories().getCount());
+        }
     }
 
 
