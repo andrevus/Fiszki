@@ -27,6 +27,28 @@ public class DBAdapter {
         myDBHelper.close();
     }
 
+    //CATEGORY TABLE OPERATIONS
+    public long insertCategory(String name){
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(DBModel.CATEGORY_NAME, name);
+        return db.insert(DBModel.CATEGORY_TABLE, null, initialValues);
+    }
+
+    public long deleteCategory(int id) {
+        String where = DBModel.CATEGORY_ROWID+" = "+id;
+        return db.delete(DBModel.CATEGORY_TABLE, where, null);
+    }
+
+    public Cursor getAllCategories() {
+        Cursor c = db.query(true, DBModel.CATEGORY_TABLE, DBModel.ALL_KEYS_CATEGORIES,
+                null, null, null, null, null, null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+
+    //FLASHCARD TABLE OPERATIONS
     public long insertRow(String word, String translate, int priority) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(DBModel.KEY_WORD, word);

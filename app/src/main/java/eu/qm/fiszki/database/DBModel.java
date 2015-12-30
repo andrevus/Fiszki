@@ -25,9 +25,11 @@ public class DBModel {
     public static final String SETTINGS_NAME = "name";
     public static final String SETTINGS_STATUS = "status";
 
-    public static final String[] ALL_KEYS = new String[]{KEY_ROWID, KEY_WORD, KEY_TRANSLATION, KEY_PRIORITY};
-    public static final String[] ALL_KEYS_SETTINGS = new String[]{
-            SETTINGS_ROWID, SETTINGS_NAME, SETTINGS_STATUS};
+    public static final String[] ALL_KEYS = new String[]{KEY_ROWID, KEY_WORD, KEY_TRANSLATION,
+                                                         KEY_PRIORITY};
+    public static final String[] ALL_KEYS_CATEGORIES = new String[]{CATEGORY_ROWID, CATEGORY_NAME};
+    public static final String[] ALL_KEYS_SETTINGS = new String[]{SETTINGS_ROWID, SETTINGS_NAME,
+                                                                  SETTINGS_STATUS};
 
     // DataBase info:
     public static final String DATABASE_NAME = "dbQM";
