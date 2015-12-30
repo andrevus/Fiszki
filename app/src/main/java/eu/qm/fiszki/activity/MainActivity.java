@@ -70,10 +70,8 @@ public class MainActivity extends AppCompatActivity {
     public Toolbar toolbar;
     public ImageView addNewCategories;
     public ImageView addNewWord;
-    public ImageView closeAddButton;
     public FABToolbarLayout fab_all;
-    public Cursor categoryCursor;
-
+    public ExpandableListView expandableList;
     private ArrayList<String> parentItems = new ArrayList<String>();
     private ArrayList<Object> childItems = new ArrayList<Object>();
 
@@ -101,23 +99,22 @@ public class MainActivity extends AppCompatActivity {
         settings.alarmIntent = new Intent(this, AlarmReceiver.class);
         settings.pendingIntent = PendingIntent.getBroadcast(this, 0, settings.alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         settings.manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        expandableList = (ExpandableListView) findViewById(R.id.list);
         openDataBase.openDB(myDb);
 
         toolbarMainActivity();
-
-        ExpandableListView expandableList = (ExpandableListView) findViewById(R.id.list);
-
+        if (myDb.getAllRows().getCount() > 0 || myDb.getAllCategories().getCount() >0) {
+            emptyDBImage.setVisibility(View.INVISIBLE);
+            emptyDBText.setVisibility(View.INVISIBLE);
+            expandableList.setVisibility(View.VISIBLE);
+        }else{
+            emptyDBImage.setVisibility(View.VISIBLE);
+            emptyDBText.setVisibility(View.VISIBLE);
+            expandableList.setVisibility(View.INVISIBLE);
+        }
         expandableList.setDividerHeight(2);
         expandableList.setGroupIndicator(null);
         expandableList.setClickable(true);
-
-        setCategories();
-        setChildData();
-
-        MyExpandableAdapter adapter = new MyExpandableAdapter(parentItems, childItems);
-
-        adapter.setInflater((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE), this);
-        expandableList.setAdapter(adapter);
 
     }
 
@@ -151,19 +148,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        listViewPopulate();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         listViewPopulate();
         toolbarMainActivity();
-        if (myDb.getAllRows().getCount() > 0) {
+        if (myDb.getAllRows().getCount() > 0 || myDb.getAllCategories().getCount() >0) {
             emptyDBImage.setVisibility(View.INVISIBLE);
             emptyDBText.setVisibility(View.INVISIBLE);
+            expandableList.setVisibility(View.VISIBLE);
         }
     }
 
@@ -197,11 +189,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void listViewPopulate() {
         sync();
-        if (myDb.getAllRows().getCount() > 0) {
-            flashCardList = new ItemAdapter(this, myDb.getAllRows(), myDb, this);
-            listView.setAdapter(flashCardList);
-        }
-     }
+        setCategories();
+        setChildData();
+        MyExpandableAdapter adapter = new MyExpandableAdapter(parentItems, childItems);
+        adapter.setInflater((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE), this);
+        expandableList.setAdapter(adapter);
+
+    }
 
     public void listViewSelect() {
         dialog = new Dialog(context);
