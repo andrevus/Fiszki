@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:2:1-61:12
+ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:2:1-67:12
 	xmlns:android
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:2:11-69
 	package
@@ -18,7 +18,7 @@ ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:5:5-66
 	android:name
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:5:22-63
 application
-ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:7:5-59:19
+ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:7:5-65:19
 MERGED from [com.android.support:appcompat-v7:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:support-v4:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:support-v4:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:22:5-20
@@ -73,14 +73,14 @@ action#android.intent.action.BOOT_COMPLETED
 ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:27:17-79
 	android:name
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:27:25-76
-activity#eu.qm.fiszki.activity.LearningModeActivity
+activity#eu.qm.fiszki.activity.ExamModeActivity
 ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:31:9-34:52
 	android:screenOrientation
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:34:13-49
 	android:label
-		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:33:13-56
+		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:33:13-52
 	android:name
-		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:32:13-58
+		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:32:13-54
 activity#eu.qm.fiszki.activity.MainActivity
 ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:35:9-45:20
 	android:screenOrientation
@@ -117,13 +117,23 @@ MERGED from [com.google.android.gms:play-services-basement:8.1.0] D:\RST\Fiszki\
 	android:value
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:53:13-66
 activity#eu.qm.fiszki.activity.AddCategoryActivity
-ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:55:9-58:68
+ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:55:9-59:51
+	android:screenOrientation
+		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:59:13-49
 	android:label
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:57:13-59
 	android:theme
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:58:13-56
 	android:name
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:56:13-57
+activity#eu.qm.fiszki.activity.LearningModeActivity
+ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:60:9-63:52
+	android:screenOrientation
+		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:63:13-49
+	android:label
+		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:62:13-56
+	android:name
+		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:61:13-58
 uses-sdk
 INJECTED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.android.support:appcompat-v7:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:20:5-43

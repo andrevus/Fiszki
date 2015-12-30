@@ -7,9 +7,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -74,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> parentItems = new ArrayList<String>();
     private ArrayList<Object> childItems = new ArrayList<Object>();
 
+    Cursor deletedRow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
         settings.pendingIntent = PendingIntent.getBroadcast(this, 0, settings.alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         settings.manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         openDataBase.openDB(myDb);
-
 
         toolbarMainActivity();
 
@@ -192,6 +195,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        listViewPopulate();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         listViewPopulate();
@@ -209,8 +218,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_selected_mainactivity, menu);
-        return true;
+        if(earlierPosition == -1) {
+            return false;
+        } else {
+            getMenuInflater().inflate(R.menu.menu_selected_mainactivity, menu);
+            return true;
+        }
     }
 
     @Override
@@ -226,16 +239,13 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
-
-
     public void listViewPopulate() {
         sync();
         if (myDb.getAllRows().getCount() > 0) {
             flashCardList = new ItemAdapter(this, myDb.getAllRows(), myDb, this);
             listView.setAdapter(flashCardList);
         }
-    }
+     }
 
     public void listViewSelect() {
         dialog = new Dialog(context);
@@ -324,7 +334,14 @@ public class MainActivity extends AppCompatActivity {
                             Intent goSettings = new Intent(MainActivity.this, SettingsActivity.class);
                             startActivity(goSettings);
                             finish();
-                        } else if (id == R.id.learningMode) {
+                        } else if (id == R.id.examMode) {
+                            if (myDb.getAllRows().getCount() > 0) {
+                                Intent goLearningMode = new Intent(MainActivity.this, ExamModeActivity.class);
+                                startActivity(goLearningMode);
+                            } else {
+                                alert.buildAlert(getString(R.string.alert_title_fail), getString(R.string.alert_learningmode_emptybase), getString(R.string.button_action_ok), MainActivity.this);
+                            }
+                        } else if(id == R.id.learningMode){
                             if (myDb.getAllRows().getCount() > 0) {
                                 Intent goLearningMode = new Intent(MainActivity.this, LearningModeActivity.class);
                                 startActivity(goLearningMode);
@@ -337,7 +354,6 @@ public class MainActivity extends AppCompatActivity {
                 });
         toolbar.dismissPopupMenus();
     }
-
 
     public void toolbarSelected() {
         setSupportActionBar(toolbar);
@@ -369,7 +385,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void listViewEdit() {
-
         editOriginal.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -421,7 +436,6 @@ public class MainActivity extends AppCompatActivity {
 
         dialog.getWindow().setAttributes(lp);
         dialog.show();
-
     }
 
     public void listViewDelete() {
@@ -434,9 +448,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 myDb.deleteRecord(rowId);
+                deletedRow = editedItem.getCursor();
                 if (myDb.getAllRows().getCount() > 0) {
                     listViewPopulate();
                     toolbarMainActivity();
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(android.R.id.content), getString(R.string.snackbar_returnword_message), Snackbar.LENGTH_LONG)
+                            .setAction(getString(R.string.snackbar_returnword_button), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    myDb.insertRow(deletedRow.getInt(0), deletedRow.getString(1),
+                                            deletedRow.getString(2), deletedRow.getInt(3));
+                                    listViewPopulate();
+                                }
+                            });
+                    snackbar.show();
+                    fab.setVisibility(View.VISIBLE);
                 } else {
                     emptyDBImage.setVisibility(View.VISIBLE);
                     emptyDBText.setVisibility(View.VISIBLE);
@@ -446,6 +473,21 @@ public class MainActivity extends AppCompatActivity {
                     myDb.updateRow(settings.notificationPosition, 0);
                     alarm.close(settings.manager, context, settings.pendingIntent);
                     toolbarMainActivity();
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(android.R.id.content), getString(R.string.snackbar_returnword_message), Snackbar.LENGTH_LONG)
+                            .setAction(getString(R.string.snackbar_returnword_button), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    myDb.insertRow(deletedRow.getInt(0), deletedRow.getString(1),
+                                            deletedRow.getString(2), deletedRow.getInt(3));
+                                    emptyDBImage.setVisibility(View.INVISIBLE);
+                                    emptyDBText.setVisibility(View.INVISIBLE);
+                                    listView.setVisibility(View.VISIBLE);
+                                    listViewPopulate();
+                                }
+                            });
+                    snackbar.show();
+                    fab.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -453,7 +495,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-
             }
         });
         alertDialog.show();

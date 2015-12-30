@@ -11,7 +11,5 @@
     <string name="main_activity_delete_record">Delete</string>
     <string name="main_activity_done_record">Back</string>
     <string name="main_activity_title_seleced_record">Selected</string>
-    <string name="title_activity_add_categories">AddCategoriesActivity</string>
-
 </resources>
 

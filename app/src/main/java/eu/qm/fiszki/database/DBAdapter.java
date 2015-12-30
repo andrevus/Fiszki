@@ -35,6 +35,15 @@ public class DBAdapter {
         return db.insert(DBModel.DATABASE_TABLE, null, initialValues);
     }
 
+    public long insertRow(int id, String word, String translate, int priority) {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(DBModel.KEY_ROWID, id);
+        initialValues.put(DBModel.KEY_WORD, word);
+        initialValues.put(DBModel.KEY_TRANSLATION, translate);
+        initialValues.put(DBModel.KEY_PRIORITY, priority);
+        return db.insert(DBModel.DATABASE_TABLE, null, initialValues);
+    }
+
     public void deleteAll(String table){
         db.execSQL("delete from "+ table);
     }
@@ -148,11 +157,17 @@ public class DBAdapter {
 
         @Override
         public void onUpgrade(SQLiteDatabase _db, int oldVersion, int newVersion) {
-           _db.execSQL("ALTER TABLE " + DBModel.DATABASE_TABLE +
-                       " ADD COLUMN " + DBModel.KEY_PRIORITY + " INTEGER");
-           _db.execSQL("UPDATE " + DBModel.DATABASE_TABLE +
-                       " SET " + DBModel.KEY_PRIORITY + " = 1 " +
-                       " WHERE " + DBModel.KEY_PRIORITY + " IS NULL");
+        //   _db.execSQL("ALTER TABLE " + DBModel.DATABASE_TABLE +
+        //               " ADD COLUMN " + DBModel.KEY_PRIORITY + " INTEGER");
+        //   _db.execSQL("UPDATE " + DBModel.DATABASE_TABLE +
+        //               " SET " + DBModel.KEY_PRIORITY + " = 1 " +
+        //               " WHERE " + DBModel.KEY_PRIORITY + " IS NULL");
+
+            _db.execSQL("ALTER TABLE " + DBModel.DATABASE_TABLE +
+                    " ADD COLUMN " + DBModel.KEY_PRIORITY + " INTEGER");
+            _db.execSQL("UPDATE " + DBModel.DATABASE_TABLE +
+                    " SET " + DBModel.KEY_PRIORITY + " = 1 " +
+                    " WHERE " + DBModel.KEY_PRIORITY + " IS NULL");
         }
     }
 }
