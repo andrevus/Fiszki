@@ -5,10 +5,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import eu.qm.fiszki.R;
+import eu.qm.fiszki.database.DBAdapter;
+import eu.qm.fiszki.database.DBStatus;
 
 public class AddCategoryActivity extends AppCompatActivity {
+
+    EditText addCategoryEditText;
+    DBAdapter myDb = new DBAdapter(this);
+    DBStatus OpenDataBase = new DBStatus();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +28,10 @@ public class AddCategoryActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        addCategoryEditText = (EditText) findViewById(R.id.addCategoryEditText);
+        OpenDataBase.openDB(myDb);
+
         
     }
 
@@ -37,6 +51,9 @@ public class AddCategoryActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             finish();
+        }
+        if (id == R.id.add_new_category_title){
+
         }
         return true;
     }
