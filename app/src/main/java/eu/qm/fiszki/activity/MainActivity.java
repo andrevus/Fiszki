@@ -128,9 +128,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     public void setChildData() {
-
         if(myDb.getAllRows().getCount()>0) {
             int x = 1;
             do {
@@ -145,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
             }while(x<1+myDb.getAllCategories().getCount());
         }
     }
-
 
     @Override
     public void onResume() {

@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -13,9 +14,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
 import android.widget.EditText;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.List;
 
 import eu.qm.fiszki.AlarmReceiver;
 import eu.qm.fiszki.Alert;
@@ -32,6 +39,7 @@ public class AddWordActivity extends AppCompatActivity {
     DBStatus OpenDataBase = new DBStatus();
     SettingsActivity settings = new SettingsActivity();
     Alert alert = new Alert();
+    Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +58,9 @@ public class AddWordActivity extends AppCompatActivity {
         settings.manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         settings.alarm = new AlarmReceiver();
         settings.context = this;
+
+        spinner = (Spinner) findViewById(R.id.spinner);
+        loadSpinnerData();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -76,7 +87,7 @@ public class AddWordActivity extends AppCompatActivity {
 
             } else if (!TextUtils.isEmpty(inputWord.getText().toString()) &&
                     !TextUtils.isEmpty(inputTranslation.getText().toString())) {
-                myDb.insertRow(inputWord.getText().toString(), inputTranslation.getText().toString(),1);
+                myDb.insertRow(inputWord.getText().toString(), inputTranslation.getText().toString(), 1, spinner.getId());
                 Toast.makeText(AddWordActivity.this,
                         getString(R.string.add_new_word_toast), Toast.LENGTH_SHORT).show();
                 inputWord.setText(null);
@@ -115,7 +126,7 @@ public class AddWordActivity extends AppCompatActivity {
 
                 } else if (!TextUtils.isEmpty(inputWord.getText().toString()) &&
                         !TextUtils.isEmpty(inputTranslation.getText().toString())) {
-                    myDb.insertRow(inputWord.getText().toString(), inputTranslation.getText().toString(),1);
+                    myDb.insertRow(inputWord.getText().toString(), inputTranslation.getText().toString(), 1, spinner.getId());
                     Toast.makeText(AddWordActivity.this,
                             getString(R.string.add_new_word_toast), Toast.LENGTH_SHORT).show();
                     inputWord.setText(null);
@@ -133,10 +144,15 @@ public class AddWordActivity extends AppCompatActivity {
                     }
                 }
             }
-
             return true;
         }
     });
-}
-
+    }
+    private void loadSpinnerData() {
+        List<String> lables = myDb.getAllLabels();
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, lables);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
+    }
 }

@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DBAdapter {
 
     private final Context context;
@@ -67,12 +70,25 @@ public class DBAdapter {
         return c;
     }
 
+    public List<String> getAllLabels(){
+       List<String> labels = new ArrayList<String>();
+       Cursor c = getAllCategories();
+       if (c.moveToFirst()) {
+            do {
+                labels.add(c.getString(1));
+            } while (c.moveToNext());
+        }
+        c.close();
+        return labels;
+    }
+
     //FLASHCARD TABLE OPERATIONS
-    public long insertRow(String word, String translate, int priority) {
+    public long insertRow(String word, String translate, int priority, int categoryId) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(DBModel.KEY_WORD, word);
         initialValues.put(DBModel.KEY_TRANSLATION, translate);
         initialValues.put(DBModel.KEY_PRIORITY, priority);
+        initialValues.put(DBModel.KEY_CATEGORY, categoryId);
         return db.insert(DBModel.DATABASE_TABLE, null, initialValues);
     }
 
