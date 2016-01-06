@@ -227,5 +227,15 @@ public class DBAdapter {
                     + DBModel.CATEGORY_TABLE + " (" + DBModel.CATEGORY_ROWID + ")");
         }
     }
+
+    public Cursor getCategoryId(String name){
+        String where = DBModel.CATEGORY_NAME +" = "+ name;
+        Cursor c = db.query(true, DBModel.CATEGORY_TABLE, DBModel.ALL_KEYS_CATEGORIES,
+                where, null, null, null, null, "1");
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
 }
 

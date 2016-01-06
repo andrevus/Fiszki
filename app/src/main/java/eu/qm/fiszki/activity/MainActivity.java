@@ -119,11 +119,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setCategories() {
-        if (myDb.getAllCategories().getCount() > 0) {
+
+        Cursor c = myDb.getAllRows();
+        if (myDb.getAllCategories().getCount() > 0 && myDb.getAllRows().getCount()>0) {
             int x = 1;
             do{
-               parentItems.add(myDb.getCategories(x).getString(1));
+                parentItems.add(c.getString(4));
                 x++;
+                c.moveToNext();
             }while(x<1+myDb.getAllCategories().getCount());
         }
     }

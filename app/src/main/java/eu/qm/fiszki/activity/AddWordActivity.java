@@ -87,7 +87,7 @@ public class AddWordActivity extends AppCompatActivity {
 
             } else if (!TextUtils.isEmpty(inputWord.getText().toString()) &&
                     !TextUtils.isEmpty(inputTranslation.getText().toString())) {
-                myDb.insertRow(inputWord.getText().toString(), inputTranslation.getText().toString(), 1, spinner.getId());
+                myDb.insertRow(inputWord.getText().toString(), inputTranslation.getText().toString(), 1, categoryIdFromSpinner());
                 Toast.makeText(AddWordActivity.this,
                         getString(R.string.add_new_word_toast), Toast.LENGTH_SHORT).show();
                 inputWord.setText(null);
@@ -126,7 +126,7 @@ public class AddWordActivity extends AppCompatActivity {
 
                 } else if (!TextUtils.isEmpty(inputWord.getText().toString()) &&
                         !TextUtils.isEmpty(inputTranslation.getText().toString())) {
-                    myDb.insertRow(inputWord.getText().toString(), inputTranslation.getText().toString(), 1, spinner.getId());
+                    myDb.insertRow(inputWord.getText().toString(), inputTranslation.getText().toString(), 1, categoryIdFromSpinner());
                     Toast.makeText(AddWordActivity.this,
                             getString(R.string.add_new_word_toast), Toast.LENGTH_SHORT).show();
                     inputWord.setText(null);
@@ -154,5 +154,13 @@ public class AddWordActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_item, lables);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
+    }
+
+    private int categoryIdFromSpinner(){
+        int categoryId;
+        String categoryNameFromSpinner = spinner.getSelectedItem().toString();
+        Cursor c = myDb.getCategoryId(categoryNameFromSpinner);
+        categoryId = c.getColumnIndexOrThrow(DBModel.CATEGORY_ROWID);
+        return categoryId;
     }
 }
