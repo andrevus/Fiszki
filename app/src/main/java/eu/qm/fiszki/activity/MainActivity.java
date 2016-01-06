@@ -29,9 +29,8 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
     static public TextView emptyDBText;
     static public Context context;
     static public ListView listView;
-    static public FloatingActionButton fab, fabc1, fabc2;
+    static public FloatingActionButton fab;
+    static public FloatingActionsMenu fab1;
     static public View[] selectedItem;
     static public int earlierPosition, selectPosition;
     static public ItemAdapter editedItem;
@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
     public Toolbar toolbar;
     public ImageView addNewCategories;
     public ImageView addNewWord;
-    public FABToolbarLayout fab_all;
     public ExpandableListView expandableList;
     private ArrayList<String> parentItems = new ArrayList<String>();
     private ArrayList<Object> childItems = new ArrayList<Object>();
@@ -89,11 +88,7 @@ public class MainActivity extends AppCompatActivity {
         myDb = new DBAdapter(this);
         context = this;
 
-
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fabc1 = (FloatingActionButton) findViewById(R.id.fabc1);
-        fabc2 = (FloatingActionButton) findViewById(R.id.fabc2);
+        fab1 = (FloatingActionsMenu) findViewById(R.id.fab1);
 
         emptyDBImage = (ImageView) findViewById(R.id.emptyDBImage);
         emptyDBText = (TextView) findViewById(R.id.emptyDBText);
@@ -105,36 +100,6 @@ public class MainActivity extends AppCompatActivity {
         openDataBase.openDB(myDb);
 
         toolbarMainActivity();
-
-        fabc1.hide();
-        fabc2.hide();
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fabc1.show();
-                fabc2.show();
-                fab.hide();
-            }
-        });
-
-        fabc1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fabc1.hide();
-                fabc2.hide();
-                fab.show();
-            }
-        });
-
-        fabc2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fabc1.hide();
-                fabc2.hide();
-                fab.show();
-            }
-        });
     }
 
     @Override
@@ -150,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(earlierPosition == -1) {
+        if (earlierPosition == -1) {
             return false;
         } else {
             getMenuInflater().inflate(R.menu.menu_selected_mainactivity, menu);
@@ -188,32 +153,11 @@ public class MainActivity extends AppCompatActivity {
         editTranslate = (EditText) dialog.findViewById(R.id.editTranslate);
         dialogButton = (Button) dialog.findViewById(R.id.editButton);
 
-        emptyDBImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(fab_all.isShown()){
-                    fab_all.hide();
-                }
-            }
-        });
-
-        listView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(fab_all.isShown()){
-                    fab_all.hide();
-                }
-                return false;
-            }
-        });
-
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if (fab_all.isToolbar()) {
-                    fab_all.hide();
-                }
+
                 rowId = (int) id;
                 selectPosition = position;
                 editedItem = (ItemAdapter) parent.getAdapter();
@@ -273,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 alert.buildAlert(getString(R.string.alert_title_fail), getString(R.string.alert_learningmode_emptybase), getString(R.string.button_action_ok), MainActivity.this);
                             }
-                        } else if(id == R.id.learningMode){
+                        } else if (id == R.id.learningMode) {
                             if (myDb.getAllRows().getCount() > 0) {
                                 Intent goLearningMode = new Intent(MainActivity.this, LearningModeActivity.class);
                                 startActivity(goLearningMode);
@@ -436,25 +380,10 @@ public class MainActivity extends AppCompatActivity {
     public void sync() {
         earlierPosition = -1;
         int x = myDb.getAllRows().getCount();
-        selectedItem = new View[x+1];
-        clickedItem = new boolean[x+1];
+        selectedItem = new View[x + 1];
+        clickedItem = new boolean[x + 1];
         Arrays.fill(clickedItem, Boolean.FALSE);
     }
-
-    public void add_new_categories(View view) {
-        fab_all.hide();
-        Intent addNewCategory = new Intent(this,AddCategoryActivity.class);
-        startActivity(addNewCategory);
-    }
-
-    public void add_new_word(View view) {
-        fab_all.hide();
-        Intent addNewWord = new Intent(this,AddWordActivity.class);
-        startActivity(addNewWord);
-    }
-
-    public void close_add_button(View view) {
-        fab_all.hide();
-    }
 }
+
 

@@ -59,37 +59,37 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/fab1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/plusbutton"
-        app:backgroundTint="@color/ColorPrimary" />
+        android:layout_gravity="bottom|right"
+        fab:fab_expandDirection="left"
+        fab:fab_addButtonColorNormal="@color/White"
+        fab:fab_addButtonColorPressed="@color/White"
+        fab:fab_addButtonPlusIconColor="@color/black">
 
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/White"
+            fab:fab_title="Action A"
+            fab:fab_colorPressed="@color/White"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabc1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_marginBottom="@dimen/fab_margin"
-        android:layout_marginLeft="70dp"
-        android:src="@drawable/ic_create_new_folder_white_24dp"
-        app:backgroundTint="@color/ColorPrimary" />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/White"
+            fab:fab_title="Action with a very long name that won\'t fit on the screen"
+            fab:fab_colorPressed="@color/White"/>
 
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabc2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_marginBottom="@dimen/fab_margin"
-        android:layout_marginRight="70dp"
-        android:src="@drawable/ic_pencil"
-        app:backgroundTint="@color/ColorPrimary" />
-
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 
 </android.support.design.widget.CoordinatorLayout>
