@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     static public TextView emptyDBText;
     static public Context context;
     static public ListView listView;
-    static public FloatingActionButton fab;
+    static public FloatingActionButton fab, fabc1, fabc2;
     static public View[] selectedItem;
     static public int earlierPosition, selectPosition;
     static public ItemAdapter editedItem;
@@ -88,10 +88,13 @@ public class MainActivity extends AppCompatActivity {
         openDataBase = new DBStatus();
         myDb = new DBAdapter(this);
         context = this;
-        addNewCategories = (ImageView) findViewById(R.id.add_category);
-        addNewWord = (ImageView) findViewById(R.id.add_word);
-        fab_all = (FABToolbarLayout) findViewById(R.id.fab_all);
-        fab = (FloatingActionButton) findViewById(R.id.fabtoolbar_fab);
+
+
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fabc1 = (FloatingActionButton) findViewById(R.id.fabc1);
+        fabc2 = (FloatingActionButton) findViewById(R.id.fabc2);
+
         emptyDBImage = (ImageView) findViewById(R.id.emptyDBImage);
         emptyDBText = (TextView) findViewById(R.id.emptyDBText);
         emptyDBImage.setImageResource(R.drawable.emptydb);
@@ -99,61 +102,45 @@ public class MainActivity extends AppCompatActivity {
         settings.alarmIntent = new Intent(this, AlarmReceiver.class);
         settings.pendingIntent = PendingIntent.getBroadcast(this, 0, settings.alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         settings.manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        expandableList = (ExpandableListView) findViewById(R.id.list);
         openDataBase.openDB(myDb);
 
         toolbarMainActivity();
-        if (myDb.getAllRows().getCount() > 0 || myDb.getAllCategories().getCount() >0) {
-            emptyDBImage.setVisibility(View.INVISIBLE);
-            emptyDBText.setVisibility(View.INVISIBLE);
-            expandableList.setVisibility(View.VISIBLE);
-        }else{
-            emptyDBImage.setVisibility(View.VISIBLE);
-            emptyDBText.setVisibility(View.VISIBLE);
-            expandableList.setVisibility(View.INVISIBLE);
-        }
-        expandableList.setDividerHeight(2);
-        expandableList.setGroupIndicator(null);
-        expandableList.setClickable(true);
 
-    }
+        fabc1.hide();
+        fabc2.hide();
 
-    public void setCategories() {
-        if (myDb.getAllCategories().getCount() > 0) {
-            int x = 1;
-            do{
-               parentItems.add(myDb.getCategories(x).getString(1));
-                x++;
-            }while(x<1+myDb.getAllCategories().getCount());
-        }
-    }
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fabc1.show();
+                fabc2.show();
+                fab.hide();
+            }
+        });
 
-    public void setChildData() {
-        if(myDb.getAllRows().getCount()>0) {
-            int x = 1;
-            do {
-                ArrayList<String> child = new ArrayList<String>();
-                for(int i=0; i==myDb.getAllRows().getCount();i++){
-                    if(myDb.getRow(i).getInt(4)==myDb.getCategories(x).getInt(0)){
-                        child.add(myDb.getRow(i).getString(1));
-                    }
-                }
-                childItems.add(child);
-                x++;
-            }while(x<1+myDb.getAllCategories().getCount());
-        }
+        fabc1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fabc1.hide();
+                fabc2.hide();
+                fab.show();
+            }
+        });
+
+        fabc2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fabc1.hide();
+                fabc2.hide();
+                fab.show();
+            }
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        listViewPopulate();
         toolbarMainActivity();
-        if (myDb.getAllRows().getCount() > 0 || myDb.getAllCategories().getCount() >0) {
-            emptyDBImage.setVisibility(View.INVISIBLE);
-            emptyDBText.setVisibility(View.INVISIBLE);
-            expandableList.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
@@ -186,8 +173,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void listViewPopulate() {
         sync();
-        setCategories();
-        setChildData();
         MyExpandableAdapter adapter = new MyExpandableAdapter(parentItems, childItems);
         adapter.setInflater((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE), this);
         expandableList.setAdapter(adapter);
