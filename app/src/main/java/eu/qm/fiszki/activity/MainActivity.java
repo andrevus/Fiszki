@@ -23,10 +23,13 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +38,7 @@ import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import eu.qm.fiszki.AlarmReceiver;
 import eu.qm.fiszki.Alert;
@@ -73,8 +77,10 @@ public class MainActivity extends AppCompatActivity {
     public FABToolbarLayout fab_all;
     public ExpandableListView expandableList;
     private ArrayList<String> parentItems = new ArrayList<String>();
-    private ArrayList<Object> childItems = new ArrayList<Object>();
-
+    private ArrayList<Object> childItems1 = new ArrayList<Object>();
+    private ArrayList<Object> childItems2 = new ArrayList<Object>();
+    List<String> child = new ArrayList<String>();
+    ExpandableListCleaner elc;
     Cursor deletedRow;
 
     @Override
@@ -83,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         settings = new SettingsActivity();
+        elc = new ExpandableListCleaner();
         alarm = new AlarmReceiver();
         alert = new Alert();
         openDataBase = new DBStatus();
@@ -112,39 +119,46 @@ public class MainActivity extends AppCompatActivity {
             emptyDBText.setVisibility(View.VISIBLE);
             expandableList.setVisibility(View.INVISIBLE);
         }
-        expandableList.setDividerHeight(2);
-        expandableList.setGroupIndicator(null);
-        expandableList.setClickable(true);
-
     }
 
     public void setCategories() {
-
-        Cursor c = myDb.getAllRows();
-        if (myDb.getAllCategories().getCount() > 0 && myDb.getAllRows().getCount()>0) {
-            int x = 1;
-            do{
-                parentItems.add(c.getString(4));
-                x++;
+        int x = 0;
+        Cursor c = myDb.getAllCategories();
+        if (myDb.getAllCategories().getCount() > 0) {
+            do {
+                parentItems.add(c.getString(1));
+                childItems1.add(setWord(x));
+                childItems2.add(setTranslation(x));
                 c.moveToNext();
-            }while(x<1+myDb.getAllCategories().getCount());
+                x++;
+            }while(x!=c.getCount());
+            }
         }
+
+    public List<String> setWord(int CategoryId){
+        Cursor c = myDb.getRowByCategory(CategoryId);
+        if(c.getCount()>0){
+            if (c.moveToFirst()) {
+                do {
+                    child.add(c.getString(1));
+                } while (c.moveToNext());
+            }
+            c.close();
+        }
+        return child;
     }
 
-    public void setChildData() {
-        if(myDb.getAllRows().getCount()>0) {
-            int x = 1;
-            do {
-                ArrayList<String> child = new ArrayList<String>();
-                for(int i=0; i==myDb.getAllRows().getCount();i++){
-                    if(myDb.getRow(i).getInt(4)==myDb.getCategories(x).getInt(0)){
-                        child.add(myDb.getRow(i).getString(1));
-                    }
-                }
-                childItems.add(child);
-                x++;
-            }while(x<1+myDb.getAllCategories().getCount());
+    public List<String> setTranslation(int CategoryId){
+        Cursor c = myDb.getRowByCategory(CategoryId);
+        if(c.getCount()>0){
+            if (c.moveToFirst()) {
+                do {
+                    child.add(c.getString(2));
+                } while (c.moveToNext());
+            }
+            c.close();
         }
+        return child;
     }
 
     @Override
@@ -190,9 +204,12 @@ public class MainActivity extends AppCompatActivity {
     public void listViewPopulate() {
         sync();
         setCategories();
-        setChildData();
-        MyExpandableAdapter adapter = new MyExpandableAdapter(parentItems, childItems);
+        expandableList = (ExpandableListView) findViewById(R.id.list);
+        MyExpandableAdapter adapter = new MyExpandableAdapter(parentItems, childItems1, childItems2);
         adapter.setInflater((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE), this);
+        expandableList.setDividerHeight(2);
+        expandableList.setGroupIndicator(null);
+        expandableList.setClickable(true);
         expandableList.setAdapter(adapter);
 
     }
@@ -209,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
         emptyDBImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(fab_all.isShown()){
+                if (fab_all.isShown()) {
                     fab_all.hide();
                 }
             }
@@ -218,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(fab_all.isShown()){
+                if (fab_all.isShown()) {
                     fab_all.hide();
                 }
                 return false;
@@ -291,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 alert.buildAlert(getString(R.string.alert_title_fail), getString(R.string.alert_learningmode_emptybase), getString(R.string.button_action_ok), MainActivity.this);
                             }
-                        } else if(id == R.id.learningMode){
+                        } else if (id == R.id.learningMode) {
                             if (myDb.getAllRows().getCount() > 0) {
                                 Intent goLearningMode = new Intent(MainActivity.this, LearningModeActivity.class);
                                 startActivity(goLearningMode);

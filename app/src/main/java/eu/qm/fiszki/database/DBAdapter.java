@@ -102,7 +102,7 @@ public class DBAdapter {
     }
 
     public void deleteAll(String table){
-        db.execSQL("delete from "+ table);
+        db.execSQL("delete from " + table);
     }
 
     public long updateRow(String settingName , int status) {
@@ -160,6 +160,17 @@ public class DBAdapter {
         }
         return c;
     }
+
+    public Cursor getRowByCategory(int CategoryId) {
+        String where = DBModel.KEY_CATEGORY + "= '" + CategoryId + "'";
+        Cursor c = db.query(true, DBModel.DATABASE_TABLE, DBModel.ALL_KEYS,
+                where, null, null, null, null, null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+
 
     public Cursor getAllRowsPriority(int priority){
         Cursor c = db.query(true, DBModel.DATABASE_TABLE,DBModel.ALL_KEYS,
@@ -229,7 +240,7 @@ public class DBAdapter {
     }
 
     public Cursor getCategoryId(String name){
-        String where = DBModel.CATEGORY_NAME +" = "+ name;
+        String where = DBModel.CATEGORY_NAME + " = " + "'" + name + "'";
         Cursor c = db.query(true, DBModel.CATEGORY_TABLE, DBModel.ALL_KEYS_CATEGORIES,
                 where, null, null, null, null, "1");
         if (c != null) {

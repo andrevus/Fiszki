@@ -7,6 +7,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
@@ -284,6 +285,7 @@ public class FABToolbarLayout extends RelativeLayout {
                 }
                 if(!fabDrawableAnimationEnabled) {
                     fab.setImageDrawable(null);
+
                 }
 
 
@@ -332,9 +334,10 @@ public class FABToolbarLayout extends RelativeLayout {
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
                         float valFloat = (Float) valueAnimator.getAnimatedValue();
-
                         fab.setScaleX(valFloat / startRadius);
                         fab.setScaleY(valFloat / startRadius);
+
+
                     }
                 });
                 sizeAnimR.setDuration(HIDE_ANIM_DURATION / 2);
@@ -370,7 +373,9 @@ public class FABToolbarLayout extends RelativeLayout {
                 hideAnimSet.playTogether(reverseAnimators);
 
                 animatorSet.start();
+
             }
+
         });
 
         isInit = false;

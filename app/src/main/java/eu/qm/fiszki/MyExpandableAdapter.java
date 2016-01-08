@@ -17,13 +17,14 @@ import java.util.ArrayList;
 public class MyExpandableAdapter extends BaseExpandableListAdapter {
 
     private Activity activity;
-    private ArrayList<Object> childtems;
+    private ArrayList<Object> childtems1, childtems2;
     private LayoutInflater inflater;
-    private ArrayList<String> parentItems, child;
+    private ArrayList<String> parentItems, child1, child2;
 
-    public MyExpandableAdapter(ArrayList<String> parents, ArrayList<Object> childern) {
+    public MyExpandableAdapter(ArrayList<String> parents, ArrayList<Object> childern1,ArrayList<Object> childern2 ) {
         this.parentItems = parents;
-        this.childtems = childern;
+        this.childtems1 = childern1;
+        this.childtems2 = childern2;
     }
 
     public void setInflater(LayoutInflater inflater, Activity activity) {
@@ -33,13 +34,17 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        child = (ArrayList<String>) childtems.get(groupPosition);
-        TextView textView = null;
+        child1 = (ArrayList<String>) childtems1.get(groupPosition);
+        child2 = (ArrayList<String>) childtems2.get(groupPosition);
+        TextView textWord = null;
+        TextView textTranslation = null;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.group, null);
         }
-        textView = (TextView) convertView.findViewById(R.id.textView1);
-        textView.setText(child.get(childPosition));
+        textTranslation = (TextView) convertView.findViewById(R.id.translation);
+        textWord = (TextView) convertView.findViewById(R.id.word);
+        textTranslation.setText(child2.get(childPosition));
+        textWord.setText(child1.get(childPosition));
         convertView.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -74,7 +79,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return ((ArrayList<String>) childtems.get(groupPosition)).size();
+        return ((ArrayList<String>) childtems1.get(groupPosition)).size();
     }
 
     @Override
