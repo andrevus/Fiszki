@@ -120,11 +120,11 @@ public class MainActivity extends AppCompatActivity {
     public void setCategories() {
         int x = 0;
         Cursor c = myDb.getAllCategories();
-        if (myDb.getAllCategories().getCount() > 0) {
+        if (c.getCount() > 0) {
             do {
                 parentItems.add(c.getString(1));
-                childWord.add(setWord(x));
-                childTranslation.add(setTranslation(x));
+                childWord.add(setWord(c.getInt(0)));
+                childTranslation.add(setTranslation(c.getInt(0)));
                 c.moveToNext();
                 x++;
             }while(x!=c.getCount());
@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
     public List<String> setWord(int CategoryId){
         Cursor c = myDb.getRowByCategory(CategoryId);
+        List<String> child = new ArrayList<String>();
         if(c.getCount()>0){
             if (c.moveToFirst()) {
                 do {
@@ -146,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
     public List<String> setTranslation(int CategoryId){
         Cursor c = myDb.getRowByCategory(CategoryId);
+        List<String> child = new ArrayList<String>();
         if(c.getCount()>0){
             if (c.moveToFirst()) {
                 do {

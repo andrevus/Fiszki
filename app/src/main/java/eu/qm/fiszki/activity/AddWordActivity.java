@@ -160,7 +160,7 @@ public class AddWordActivity extends AppCompatActivity {
         int categoryId;
         String categoryNameFromSpinner = spinner.getSelectedItem().toString();
         Cursor c = myDb.getCategoryId(categoryNameFromSpinner);
-        categoryId = c.getColumnIndexOrThrow(DBModel.CATEGORY_ROWID);
+        categoryId = c.getInt(0);
         return categoryId;
     }
 }
