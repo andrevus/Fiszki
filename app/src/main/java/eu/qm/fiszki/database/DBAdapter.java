@@ -162,7 +162,7 @@ public class DBAdapter {
     }
 
     public Cursor getRowByCategory(int CategoryId) {
-        String where = DBModel.KEY_CATEGORY + "= '" + CategoryId + "'";
+        String where = DBModel.KEY_CATEGORY + "=" +CategoryId;
         Cursor c = db.query(true, DBModel.DATABASE_TABLE, DBModel.ALL_KEYS,
                 where, null, null, null, null, null);
         if (c != null) {
