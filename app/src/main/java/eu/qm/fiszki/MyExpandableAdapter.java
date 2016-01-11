@@ -1,11 +1,14 @@
 package eu.qm.fiszki;
 
 import android.app.Activity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,26 +37,42 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+
         child1 = (ArrayList<String>) childtems1.get(groupPosition);
         child2 = (ArrayList<String>) childtems2.get(groupPosition);
         TextView textWord = null;
         TextView textTranslation = null;
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.group, null);
-        }
-        textTranslation = (TextView) convertView.findViewById(R.id.translation);
-        textWord = (TextView) convertView.findViewById(R.id.word);
-        textTranslation.setText(child2.get(childPosition));
-        textWord.setText(child1.get(childPosition));
-        convertView.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(activity, "HITLER",
-                        Toast.LENGTH_SHORT).show();
-
+        if(!child1.get(childPosition).equals("")) {
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.group, null);
             }
-        });
+            textTranslation = (TextView) convertView.findViewById(R.id.translation);
+            textWord = (TextView) convertView.findViewById(R.id.word);
+            textWord.setGravity(Gravity.START);
+            textWord.setTextSize(20f);
+            textTranslation.setText(child2.get(childPosition));
+            textWord.setText(child1.get(childPosition));
+            convertView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(activity, "HITLER",
+                            Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }else{
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.group, null);
+            }
+            textTranslation = (TextView) convertView.findViewById(R.id.translation);
+            textWord = (TextView) convertView.findViewById(R.id.word);
+            textWord.setGravity(Gravity.CENTER);
+            textWord.setTextSize(25f);
+            textWord.setText(R.string.main_activity_empty_group);
+            textTranslation.setText("");
+
+        }
         return convertView;
     }
 

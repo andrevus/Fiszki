@@ -141,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
                 } while (c.moveToNext());
             }
             c.close();
+        }else{
+            child.add("");
         }
         return child;
     }
@@ -148,13 +150,15 @@ public class MainActivity extends AppCompatActivity {
     public List<String> setTranslation(int CategoryId){
         Cursor c = myDb.getRowByCategory(CategoryId);
         List<String> child = new ArrayList<String>();
-        if(c.getCount()>0){
+        if(c.getCount()>0) {
             if (c.moveToFirst()) {
                 do {
                     child.add(c.getString(2));
                 } while (c.moveToNext());
             }
             c.close();
+        }else{
+            child.add("");
         }
         return child;
     }
