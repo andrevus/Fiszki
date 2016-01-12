@@ -28,12 +28,14 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import eu.qm.fiszki.AlarmReceiver;
 import eu.qm.fiszki.Alert;
@@ -63,14 +65,14 @@ public class MainActivity extends AppCompatActivity {
     static public EditText editOriginal;
     static public EditText editTranslate;
     static public Button dialogButton;
-    public boolean[] clickedItem;
-    public int rowId;
-    public AlarmReceiver alarm;
-    public Toolbar toolbar;
-    public ImageView addNewCategories;
-    public ImageView addNewWord;
-    public FABToolbarLayout fab_all;
-    public ExpandableListView expandableList;
+    static public boolean[] clickedItem;
+    static public int rowId;
+    static public AlarmReceiver alarm;
+    static public Toolbar toolbar;
+    static public ImageView addNewCategories;
+    static public ImageView addNewWord;
+    static public FABToolbarLayout fab_all;
+    static public ExpandableListView expandableList;
     private ArrayList<String> parentItems = new ArrayList<String>();
     private ArrayList<Object> childWord = new ArrayList<Object>();
     private ArrayList<Object> childTranslation = new ArrayList<Object>();
