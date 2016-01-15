@@ -21,6 +21,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -240,34 +241,45 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        expandableList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        expandableList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                                                      @Override
+                                                      public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                                                          if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                                                              int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                                                              int childPosition = ExpandableListView.getPackedPositionChild(id);
+
+                                                              editOriginal.setText(adapter.getChildWord(groupPosition, childPosition));
+                                                              editTranslate.setText(adapter.getChildTranslate(groupPosition, childPosition));
+                                                              rowId = myDb.getRowIdByWord(editOriginal.getText().toString());
+
+                                                              if (rowId > -1) {
+                                                                  if (fab_all.isToolbar()) {
+                                                                      fab_all.hide();
+                                                                  }
+
+                                                                  if (clickedChildView != null) {
+                                                                      clickedChildView.setBackgroundColor(getResources().getColor(R.color.likeWhite));
+                                                                      toolbarMainActivity();
+                                                                  }
+                                                                  clickedChildView = view;
+                                                                  clickedChildView.setBackgroundColor(getResources().getColor(R.color.pressed_color));
+                                                                  toolbarSelected();
+                                                                  fab.hide();
+                                                              }
+                                                              return true;
+                                                          }
+                                                          return false;
+                                                      }
+                                                  }
+
+        );
+
+        expandableList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener()
+
+        {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-
-                editOriginal.setText(adapter.getChildWord(groupPosition, childPosition));
-                editTranslate.setText(adapter.getChildTranslate(groupPosition, childPosition));
-                rowId = myDb.getRowIdByWord(editOriginal.getText().toString());
-                if(rowId>-1) {
-                    if (fab_all.isToolbar()) {
-                        fab_all.hide();
-                    }
-
-                    if (clickedChildView != null) {
-                        clickedChildView.setBackgroundColor(getResources().getColor(R.color.likeWhite));
-                        toolbarMainActivity();
-                    }
-                    clickedChildView = v;
-                    clickedChildView.setBackgroundColor(getResources().getColor(R.color.pressed_color));
-                    toolbarSelected();
-                    fab.hide();
-                }
-                return true;
-            }
-        });
-
-        expandableList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition,
+                                        long id) {
                 if (clickedChildView != null) {
                     fab.show();
                     clickedChildView.setBackgroundColor(getResources().getColor(R.color.likeWhite));
