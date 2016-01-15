@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +30,14 @@ public class DBAdapter {
     }
 
     //CATEGORY TABLE OPERATIONS
-    public long insertCategory(String name){
+    public long insertCategory(String name) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(DBModel.CATEGORY_NAME, name);
         return db.insert(DBModel.CATEGORY_TABLE, null, initialValues);
     }
 
     public long deleteCategory(int id) {
-        String where = DBModel.CATEGORY_ROWID+" = "+id;
+        String where = DBModel.CATEGORY_ROWID + " = " + id;
         return db.delete(DBModel.CATEGORY_TABLE, where, null);
     }
 
@@ -50,18 +49,19 @@ public class DBAdapter {
         }
         return c;
     }
+
     public boolean getCategoryValue(String column, String text) {
         Cursor c = db.query(false, DBModel.CATEGORY_TABLE, DBModel.ALL_KEYS_CATEGORIES,
-                column +"="+ "'"+text+"'", null, null, null, null, null);
-        if (c.getCount()>0) {
+                column + "=" + "'" + text + "'", null, null, null, null, null);
+        if (c.getCount() > 0) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
+
     public Cursor getCategories(int id) {
-        String where = DBModel.CATEGORY_ROWID+" = "+id;
+        String where = DBModel.CATEGORY_ROWID + " = " + id;
         Cursor c = db.query(true, DBModel.CATEGORY_TABLE, DBModel.ALL_KEYS_CATEGORIES,
                 where, null, null, null, null, "1");
         if (c != null) {
@@ -70,10 +70,10 @@ public class DBAdapter {
         return c;
     }
 
-    public List<String> getAllLabels(){
-       List<String> labels = new ArrayList<String>();
-       Cursor c = getAllCategories();
-       if (c.moveToFirst()) {
+    public List<String> getAllLabels() {
+        List<String> labels = new ArrayList<String>();
+        Cursor c = getAllCategories();
+        if (c.moveToFirst()) {
             do {
                 labels.add(c.getString(1));
             } while (c.moveToNext());
@@ -82,7 +82,7 @@ public class DBAdapter {
         return labels;
     }
 
-    public Cursor getCategoryId(String name){
+    public Cursor getCategoryId(String name) {
         String where = DBModel.CATEGORY_NAME + " = " + "'" + name + "'";
         Cursor c = db.query(true, DBModel.CATEGORY_TABLE, DBModel.ALL_KEYS_CATEGORIES,
                 where, null, null, null, null, "1");
@@ -102,20 +102,21 @@ public class DBAdapter {
         return db.insert(DBModel.DATABASE_TABLE, null, initialValues);
     }
 
-    public long insertRow(int id, String word, String translate, int priority) {
+    public long insertRowWithId(int id, String word, String translate, int priority, int category) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(DBModel.KEY_ROWID, id);
         initialValues.put(DBModel.KEY_WORD, word);
         initialValues.put(DBModel.KEY_TRANSLATION, translate);
         initialValues.put(DBModel.KEY_PRIORITY, priority);
+        initialValues.put(DBModel.KEY_CATEGORY, category);
         return db.insert(DBModel.DATABASE_TABLE, null, initialValues);
     }
 
-    public void deleteAll(String table){
+    public void deleteAll(String table) {
         db.execSQL("delete from " + table);
     }
 
-    public long updateRow(String settingName , int status) {
+    public long updateRow(String settingName, int status) {
         ContentValues values = new ContentValues();
         values.put(DBModel.SETTINGS_STATUS, status);
         return db.update(DBModel.SETTINGS_TABLE, values,
@@ -123,12 +124,13 @@ public class DBAdapter {
     }
 
 
-    public long updateFlashcardPriority(int id, int ptiotity){
+    public long updateFlashcardPriority(int id, int ptiotity) {
         ContentValues values = new ContentValues();
         values.put(DBModel.KEY_PRIORITY, ptiotity);
-        return db.update(DBModel.DATABASE_TABLE, values, DBModel.KEY_ROWID + "=" + id, null);}
+        return db.update(DBModel.DATABASE_TABLE, values, DBModel.KEY_ROWID + "=" + id, null);
+    }
 
-    public long updateAdapter(int id , String word, String translate) {
+    public long updateAdapter(int id, String word, String translate) {
         ContentValues values = new ContentValues();
         values.put(DBModel.KEY_WORD, word);
         values.put(DBModel.KEY_TRANSLATION, translate);
@@ -136,22 +138,21 @@ public class DBAdapter {
     }
 
     public long deleteRecord(int id) {
-        String where = DBModel.KEY_ROWID+" = "+id;
+        String where = DBModel.KEY_ROWID + " = " + id;
         return db.delete(DBModel.DATABASE_TABLE, where, null);
     }
 
     public boolean getRowValue(String column, String text) {
         Cursor c = db.query(false, DBModel.DATABASE_TABLE, DBModel.ALL_KEYS,
-                column +"="+ "'"+text+"'", null, null, null, null, null);
-        if (c.getCount()>0) {
+                column + "=" + "'" + text + "'", null, null, null, null, null);
+        if (c.getCount() > 0) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    public int intRowValue(String column, String text){
+    public int intRowValue(String column, String text) {
         String where = column + "=" + "'" + text + "'";
         Cursor c = db.query(true, DBModel.SETTINGS_TABLE, DBModel.ALL_KEYS_SETTINGS,
                 where, null, null, null, null, null);
@@ -172,7 +173,7 @@ public class DBAdapter {
     }
 
     public Cursor getRowByCategory(int CategoryId) {
-        String where = DBModel.KEY_CATEGORY + "=" +CategoryId;
+        String where = DBModel.KEY_CATEGORY + "=" + CategoryId;
         Cursor c = db.query(true, DBModel.DATABASE_TABLE, DBModel.ALL_KEYS,
                 where, null, null, null, null, null);
         if (c != null) {
@@ -182,8 +183,8 @@ public class DBAdapter {
     }
 
 
-    public Cursor getAllRowsPriority(int priority){
-        Cursor c = db.query(true, DBModel.DATABASE_TABLE,DBModel.ALL_KEYS,
+    public Cursor getAllRowsPriority(int priority) {
+        Cursor c = db.query(true, DBModel.DATABASE_TABLE, DBModel.ALL_KEYS,
                 DBModel.KEY_PRIORITY + "=" + priority, null, null, null, null, null);
         if (c != null) {
             c.moveToFirst();
@@ -210,7 +211,7 @@ public class DBAdapter {
     }
 
     public Cursor getRow(int id) {
-        String where = DBModel.KEY_ROWID+" = "+id;
+        String where = DBModel.KEY_ROWID + " = " + id;
         Cursor c = db.query(true, DBModel.DATABASE_TABLE, DBModel.ALL_KEYS,
                 where, null, null, null, null, "1");
         if (c != null) {
@@ -219,14 +220,18 @@ public class DBAdapter {
         return c;
     }
 
-    public int getRowIdByWord(String name){
+    public int getRowIdByWord(String name) {
         String where = DBModel.KEY_WORD + " = " + "'" + name + "'";
         Cursor c = db.query(true, DBModel.DATABASE_TABLE, DBModel.ALL_KEYS,
                 where, null, null, null, null, "1");
         if (c != null) {
             c.moveToFirst();
         }
-        return c.getInt(0);
+        if(c.getCount()>0){
+            return c.getInt(0);
+        }else{
+            return -1;
+        }
     }
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -246,12 +251,6 @@ public class DBAdapter {
 
         @Override
         public void onUpgrade(SQLiteDatabase _db, int oldVersion, int newVersion) {
-        //   _db.execSQL("ALTER TABLE " + DBModel.DATABASE_TABLE +
-        //               " ADD COLUMN " + DBModel.KEY_PRIORITY + " INTEGER");
-        //   _db.execSQL("UPDATE " + DBModel.DATABASE_TABLE +
-        //               " SET " + DBModel.KEY_PRIORITY + " = 1 " +
-        //               " WHERE " + DBModel.KEY_PRIORITY + " IS NULL");
-
             _db.execSQL(DBModel.DATABASE_CREATE_CATEGORY);
             _db.execSQL("ALTER TABLE " + DBModel.DATABASE_TABLE +
                     " ADD COLUMN " + DBModel.KEY_CATEGORY + " INTEGER, FOREIGN KEY( " + DBModel.KEY_CATEGORY + ") REFERENCES "

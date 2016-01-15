@@ -244,22 +244,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
-                if (fab_all.isToolbar()) {
-                    fab_all.hide();
-                }
-
-                if (clickedChildView != null) {
-                    clickedChildView.setBackgroundColor(getResources().getColor(R.color.likeWhite));
-                    toolbarMainActivity();
-                }
-                clickedChildView = v;
-                clickedChildView.setBackgroundColor(getResources().getColor(R.color.pressed_color));
-                toolbarSelected();
-                fab.hide();
-
                 editOriginal.setText(adapter.getChildWord(groupPosition, childPosition));
                 editTranslate.setText(adapter.getChildTranslate(groupPosition, childPosition));
                 rowId = myDb.getRowIdByWord(editOriginal.getText().toString());
+                if(rowId>-1) {
+                    if (fab_all.isToolbar()) {
+                        fab_all.hide();
+                    }
+
+                    if (clickedChildView != null) {
+                        clickedChildView.setBackgroundColor(getResources().getColor(R.color.likeWhite));
+                        toolbarMainActivity();
+                    }
+                    clickedChildView = v;
+                    clickedChildView.setBackgroundColor(getResources().getColor(R.color.pressed_color));
+                    toolbarSelected();
+                    fab.hide();
+                }
                 return true;
             }
         });
@@ -394,6 +395,7 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.setButton(getString(R.string.button_action_yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                deletedRow = myDb.getRow(rowId);
                 myDb.deleteRecord(rowId);
                 if (myDb.getAllRows().getCount() > 0) {
                     listViewPopulate();
@@ -403,8 +405,8 @@ public class MainActivity extends AppCompatActivity {
                             .setAction(getString(R.string.snackbar_returnword_button), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    myDb.insertRow(deletedRow.getInt(0), deletedRow.getString(1),
-                                            deletedRow.getString(2), deletedRow.getInt(3));
+                                    myDb.insertRowWithId(deletedRow.getInt(0), deletedRow.getString(1),
+                                            deletedRow.getString(2), deletedRow.getInt(3), deletedRow.getInt(4));
                                     listViewPopulate();
                                 }
                             });
@@ -424,8 +426,8 @@ public class MainActivity extends AppCompatActivity {
                             .setAction(getString(R.string.snackbar_returnword_button), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    myDb.insertRow(deletedRow.getInt(0), deletedRow.getString(1),
-                                            deletedRow.getString(2), deletedRow.getInt(3));
+                                    myDb.insertRowWithId(deletedRow.getInt(0), deletedRow.getString(1),
+                                            deletedRow.getString(2), deletedRow.getInt(3), deletedRow.getInt(4));
                                     emptyDBImage.setVisibility(View.INVISIBLE);
                                     emptyDBText.setVisibility(View.INVISIBLE);
                                     listView.setVisibility(View.VISIBLE);
