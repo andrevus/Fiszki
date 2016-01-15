@@ -60,7 +60,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
             textTranslation.setText(child2.get(childPosition));
             textWord.setText(child1.get(childPosition));
         }
-        convertView.setBackgroundColor(activity.getResources().getColor(R.color.likeWhite));
+        convertView.setBackgroundColor(activity.getResources().getColor(android.R.color.transparent));
         return convertView;
     }
 

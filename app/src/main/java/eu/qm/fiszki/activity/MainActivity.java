@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                                                                   }
 
                                                                   if (clickedChildView != null) {
-                                                                      clickedChildView.setBackgroundColor(getResources().getColor(R.color.likeWhite));
+                                                                      clickedChildView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                                                                       toolbarMainActivity();
                                                                   }
                                                                   clickedChildView = view;
