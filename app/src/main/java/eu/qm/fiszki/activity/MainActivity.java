@@ -21,21 +21,17 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import eu.qm.fiszki.AlarmReceiver;
 import eu.qm.fiszki.Alert;
@@ -52,20 +48,15 @@ public class MainActivity extends AppCompatActivity {
     static public DBAdapter myDb;
     static public DBStatus openDataBase;
     static public Alert alert;
-    static public ItemAdapter flashCardList;
     static public ImageView emptyDBImage;
     static public TextView emptyDBText;
     static public Context context;
     static public ListView listView;
     static public FloatingActionButton fab;
-    static public View[] selectedItem;
-    static public int earlierPosition, selectPosition;
-    static public ItemAdapter editedItem;
     static public Dialog dialog;
     static public EditText editOriginal;
     static public EditText editTranslate;
     static public Button dialogButton;
-    static public boolean[] clickedItem;
     static public int rowId;
     static public AlarmReceiver alarm;
     static public Toolbar toolbar;
@@ -73,12 +64,13 @@ public class MainActivity extends AppCompatActivity {
     static public ImageView addNewWord;
     static public FABToolbarLayout fab_all;
     static public ExpandableListView expandableList;
-    private ArrayList<String> parentItems = new ArrayList<String>();
-    private ArrayList<Object> childWord = new ArrayList<Object>();
-    private ArrayList<Object> childTranslation = new ArrayList<Object>();
+    static public View clickedChildView;
     List<String> child = new ArrayList<String>();
     ExpandableListCleaner elc;
     Cursor deletedRow;
+    private ArrayList<String> parentItems = new ArrayList<String>();
+    private ArrayList<Object> childWord = new ArrayList<Object>();
+    private ArrayList<Object> childTranslation = new ArrayList<Object>();
     private MyExpandableAdapter adapter;
 
     @Override
@@ -108,15 +100,18 @@ public class MainActivity extends AppCompatActivity {
         openDataBase.openDB(myDb);
 
         toolbarMainActivity();
-        if (myDb.getAllRows().getCount() > 0 || myDb.getAllCategories().getCount() >0) {
+        listViewSelect();
+
+        if (myDb.getAllRows().getCount() > 0 || myDb.getAllCategories().getCount() > 0) {
             emptyDBImage.setVisibility(View.INVISIBLE);
             emptyDBText.setVisibility(View.INVISIBLE);
             expandableList.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             emptyDBImage.setVisibility(View.VISIBLE);
             emptyDBText.setVisibility(View.VISIBLE);
             expandableList.setVisibility(View.INVISIBLE);
         }
+
     }
 
     public void setCategories() {
@@ -129,37 +124,37 @@ public class MainActivity extends AppCompatActivity {
                 childTranslation.add(setTranslation(c.getInt(0)));
                 c.moveToNext();
                 x++;
-            }while(x!=c.getCount());
-            }
+            } while (x != c.getCount());
         }
+    }
 
-    public List<String> setWord(int CategoryId){
+    public List<String> setWord(int CategoryId) {
         Cursor c = myDb.getRowByCategory(CategoryId);
         List<String> child = new ArrayList<String>();
-        if(c.getCount()>0){
+        if (c.getCount() > 0) {
             if (c.moveToFirst()) {
                 do {
                     child.add(c.getString(1));
                 } while (c.moveToNext());
             }
             c.close();
-        }else{
+        } else {
             child.add("");
         }
         return child;
     }
 
-    public List<String> setTranslation(int CategoryId){
+    public List<String> setTranslation(int CategoryId) {
         Cursor c = myDb.getRowByCategory(CategoryId);
         List<String> child = new ArrayList<String>();
-        if(c.getCount()>0) {
+        if (c.getCount() > 0) {
             if (c.moveToFirst()) {
                 do {
                     child.add(c.getString(2));
                 } while (c.moveToNext());
             }
             c.close();
-        }else{
+        } else {
             child.add("");
         }
         return child;
@@ -170,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         listViewPopulate();
         toolbarMainActivity();
-        if (myDb.getAllRows().getCount() > 0 || myDb.getAllCategories().getCount() >0) {
+        if (myDb.getAllRows().getCount() > 0 || myDb.getAllCategories().getCount() > 0) {
             emptyDBImage.setVisibility(View.INVISIBLE);
             emptyDBText.setVisibility(View.INVISIBLE);
             expandableList.setVisibility(View.VISIBLE);
@@ -184,22 +179,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(earlierPosition == -1) {
-            return false;
-        } else {
-            getMenuInflater().inflate(R.menu.menu_selected_mainactivity, menu);
-            return true;
-        }
+        getMenuInflater().inflate(R.menu.menu_selected_mainactivity, menu);
+        return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            selectedItem[earlierPosition].setBackgroundColor(getResources().getColor(R.color.default_color));
             fab.show();
-            clickedItem[selectPosition] = false;
-            selectedItem[selectPosition].setSelected(false);
+            clickedChildView.setBackgroundColor(getResources().getColor(R.color.likeWhite));
             toolbarMainActivity();
         }
         return true;
@@ -212,7 +202,6 @@ public class MainActivity extends AppCompatActivity {
         childTranslation.clear();
         child.clear();
         setCategories();
-        expandableList = (ExpandableListView) findViewById(R.id.list);
         adapter = new MyExpandableAdapter(parentItems, childWord, childTranslation);
         adapter.setInflater((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE), this);
         expandableList.setDividerHeight(2);
@@ -241,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        listView.setOnTouchListener(new View.OnTouchListener() {
+        expandableList.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (fab_all.isShown()) {
@@ -251,46 +240,39 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        expandableList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
                 if (fab_all.isToolbar()) {
                     fab_all.hide();
                 }
-                rowId = (int) id;
-                selectPosition = position;
-                editedItem = (ItemAdapter) parent.getAdapter();
-                editOriginal.setText(editedItem.getCursor().getString(1));
-                editTranslate.setText(editedItem.getCursor().getString(2));
 
-                if (!clickedItem[selectPosition] && earlierPosition == -1) {
-                    selectedItem[selectPosition] = view;
-                    clickedItem[selectPosition] = true;
-                    selectedItem[selectPosition].setBackgroundColor(getResources().getColor(R.color.pressed_color));
-                    selectedItem[selectPosition].setSelected(true);
-                    fab.hide();
-                    earlierPosition = selectPosition;
-                    toolbarSelected();
-                } else if (!clickedItem[selectPosition]) {
-                    selectedItem[earlierPosition].setBackgroundColor(getResources().getColor(R.color.default_color));
-                    clickedItem[earlierPosition] = false;
-                    selectedItem[earlierPosition].setSelected(false);
-                    selectedItem[selectPosition] = view;
-                    clickedItem[selectPosition] = true;
-                    selectedItem[selectPosition].setBackgroundColor(getResources().getColor(R.color.pressed_color));
-                    selectedItem[selectPosition].setSelected(true);
-                    fab.hide();
-                    earlierPosition = selectPosition;
-                    toolbarSelected();
-                } else {
-                    selectedItem[earlierPosition].setBackgroundColor(getResources().getColor(R.color.default_color));
-                    fab.show();
-                    clickedItem[selectPosition] = false;
-                    selectedItem[selectPosition].setSelected(false);
+                if (clickedChildView != null) {
+                    clickedChildView.setBackgroundColor(getResources().getColor(R.color.likeWhite));
                     toolbarMainActivity();
                 }
+                clickedChildView = v;
+                clickedChildView.setBackgroundColor(getResources().getColor(R.color.pressed_color));
+                toolbarSelected();
+                fab.hide();
+
+                editOriginal.setText(adapter.getChildWord(groupPosition, childPosition));
+                editTranslate.setText(adapter.getChildTranslate(groupPosition, childPosition));
+                rowId = myDb.getRowIdByWord(editOriginal.getText().toString());
                 return true;
+            }
+        });
+
+        expandableList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                if (clickedChildView != null) {
+                    fab.show();
+                    clickedChildView.setBackgroundColor(getResources().getColor(R.color.likeWhite));
+                    toolbarMainActivity();
+                }
+                return false;
             }
         });
     }
@@ -312,8 +294,8 @@ public class MainActivity extends AppCompatActivity {
                             finish();
                         } else if (id == R.id.examMode) {
                             if (myDb.getAllRows().getCount() > 0) {
-                                Intent goLearningMode = new Intent(MainActivity.this, ExamModeActivity.class);
-                                startActivity(goLearningMode);
+                                Intent goExamMode = new Intent(MainActivity.this, ExamModeActivity.class);
+                                startActivity(goExamMode);
                             } else {
                                 alert.buildAlert(getString(R.string.alert_title_fail), getString(R.string.alert_learningmode_emptybase), getString(R.string.button_action_ok), MainActivity.this);
                             }
@@ -348,10 +330,7 @@ public class MainActivity extends AppCompatActivity {
                         } else if (id == R.id.deleteRecord) {
                             listViewDelete();
                         } else if (id == android.R.id.home) {
-                            selectedItem[earlierPosition].setBackgroundColor(getResources().getColor(R.color.default_color));
                             fab.show();
-                            clickedItem[selectPosition] = false;
-                            selectedItem[selectPosition].setSelected(false);
                             toolbarMainActivity();
                         }
                         return true;
@@ -377,12 +356,8 @@ public class MainActivity extends AppCompatActivity {
                     alert.buildAlert(getString(R.string.alert_title), getString(R.string.alert_message_onEmptyFields), getString(R.string.button_action_ok), MainActivity.this);
                 } else {
                     if (myDb.getRow(rowId).getString(1).equals(editOriginal.getText().toString())) {
-                        myDb.updateAdapter(rowId, editOriginal.getText().toString(),
-                                editTranslate.getText().toString());
-                        selectedItem[earlierPosition].setBackgroundColor(getResources().getColor(R.color.default_color));
+                        myDb.updateAdapter(rowId, editOriginal.getText().toString(), editTranslate.getText().toString());
                         fab.show();
-                        clickedItem[selectPosition] = false;
-                        selectedItem[selectPosition].setSelected(false);
                         listViewPopulate();
                         dialog.dismiss();
                         toolbarMainActivity();
@@ -391,12 +366,8 @@ public class MainActivity extends AppCompatActivity {
                             alert.buildAlert(getString(R.string.alert_title), getString(R.string.alert_message_onRecordExist), getString(R.string.button_action_ok), MainActivity.this);
                             editOriginal.requestFocus();
                         } else {
-                            myDb.updateAdapter(rowId, editOriginal.getText().toString(),
-                                    editTranslate.getText().toString());
-                            //selectedItem[earlierPosition].setBackgroundColor(getResources().getColor(R.color.default_color));
+                            myDb.updateAdapter(rowId, editOriginal.getText().toString(), editTranslate.getText().toString());
                             fab.show();
-                            clickedItem[selectPosition] = false;
-                            //selectedItem[selectPosition].setSelected(false);
                             listViewPopulate();
                             dialog.dismiss();
                             toolbarMainActivity();
@@ -424,7 +395,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 myDb.deleteRecord(rowId);
-                deletedRow = editedItem.getCursor();
                 if (myDb.getAllRows().getCount() > 0) {
                     listViewPopulate();
                     toolbarMainActivity();
@@ -478,27 +448,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sync() {
-        earlierPosition = -1;
-        int x = myDb.getAllRows().getCount();
-        selectedItem = new View[x+1];
-        clickedItem = new boolean[x+1];
-        Arrays.fill(clickedItem, Boolean.FALSE);
+
     }
 
     public void add_new_categories(View view) {
         fab_all.hide();
-        Intent addNewCategory = new Intent(this,AddCategoryActivity.class);
+        Intent addNewCategory = new Intent(this, AddCategoryActivity.class);
         startActivity(addNewCategory);
     }
 
     public void add_new_word(View view) {
         fab_all.hide();
-        Intent addNewWord = new Intent(this,AddWordActivity.class);
+        Intent addNewWord = new Intent(this, AddWordActivity.class);
         startActivity(addNewWord);
-    }
-
-    public void close_add_button(View view) {
-        fab_all.hide();
     }
 }
 

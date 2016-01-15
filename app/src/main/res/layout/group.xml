@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1"
-    android:screenOrientation="portrait">
+    android:screenOrientation="portrait"
+    android:focusable="false">
 
     <TextView
         android:layout_width="403dp"

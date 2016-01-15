@@ -82,6 +82,16 @@ public class DBAdapter {
         return labels;
     }
 
+    public Cursor getCategoryId(String name){
+        String where = DBModel.CATEGORY_NAME + " = " + "'" + name + "'";
+        Cursor c = db.query(true, DBModel.CATEGORY_TABLE, DBModel.ALL_KEYS_CATEGORIES,
+                where, null, null, null, null, "1");
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+
     //FLASHCARD TABLE OPERATIONS
     public long insertRow(String word, String translate, int priority, int categoryId) {
         ContentValues initialValues = new ContentValues();
@@ -209,6 +219,16 @@ public class DBAdapter {
         return c;
     }
 
+    public int getRowIdByWord(String name){
+        String where = DBModel.KEY_WORD + " = " + "'" + name + "'";
+        Cursor c = db.query(true, DBModel.DATABASE_TABLE, DBModel.ALL_KEYS,
+                where, null, null, null, null, "1");
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c.getInt(0);
+    }
+
     private static class DatabaseHelper extends SQLiteOpenHelper {
         DatabaseHelper(Context context) {
             super(context, DBModel.DATABASE_NAME, null, DBModel.DATABASE_VERSION);
@@ -237,16 +257,6 @@ public class DBAdapter {
                     " ADD COLUMN " + DBModel.KEY_CATEGORY + " INTEGER, FOREIGN KEY( " + DBModel.KEY_CATEGORY + ") REFERENCES "
                     + DBModel.CATEGORY_TABLE + " (" + DBModel.CATEGORY_ROWID + ")");
         }
-    }
-
-    public Cursor getCategoryId(String name){
-        String where = DBModel.CATEGORY_NAME + " = " + "'" + name + "'";
-        Cursor c = db.query(true, DBModel.CATEGORY_TABLE, DBModel.ALL_KEYS_CATEGORIES,
-                where, null, null, null, null, "1");
-        if (c != null) {
-            c.moveToFirst();
-        }
-        return c;
     }
 }
 
