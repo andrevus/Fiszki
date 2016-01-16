@@ -92,6 +92,12 @@ public class DBAdapter {
         return c;
     }
 
+    public long updateCategory(int id, String nameCategory) {
+        ContentValues values = new ContentValues();
+        values.put(DBModel.CATEGORY_NAME, nameCategory);
+        return db.update(DBModel.CATEGORY_TABLE, values, DBModel.CATEGORY_ROWID+ "= " + "'" + id + "'", null);
+    }
+
     //FLASHCARD TABLE OPERATIONS
     public long insertRow(String word, String translate, int priority, int categoryId) {
         ContentValues initialValues = new ContentValues();

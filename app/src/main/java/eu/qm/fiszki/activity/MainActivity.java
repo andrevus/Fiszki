@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     static public Dialog dialog;
     static public EditText editOriginal;
     static public EditText editTranslate;
+    static public EditText editCategory;
     static public Button dialogButton;
     static public int rowId;
     static public AlarmReceiver alarm;
@@ -65,7 +66,10 @@ public class MainActivity extends AppCompatActivity {
     static public ImageView addNewWord;
     static public FABToolbarLayout fab_all;
     static public ExpandableListView expandableList;
-    static public View clickedChildView;
+    static public View clickedView;
+    static public String typeOfSelected;
+    static public String typeCategory = "Category";
+    static public String typeFlashcard = "Flashcard";
     List<String> child = new ArrayList<String>();
     ExpandableListCleaner elc;
     Cursor deletedRow;
@@ -190,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             fab.show();
-            clickedChildView.setBackgroundColor(getResources().getColor(R.color.likeWhite));
+            clickedView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
             toolbarMainActivity();
         }
         return true;
@@ -215,12 +219,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void listViewSelect() {
         dialog = new Dialog(context);
-        dialog.setContentView(R.layout.layout_dialog_edit);
-        dialog.setTitle(R.string.main_activity_dialog_edit_item);
-
-        editOriginal = (EditText) dialog.findViewById(R.id.editOrginal);
-        editTranslate = (EditText) dialog.findViewById(R.id.editTranslate);
-        dialogButton = (Button) dialog.findViewById(R.id.editButton);
 
         emptyDBImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,6 +246,8 @@ public class MainActivity extends AppCompatActivity {
                                                               int groupPosition = ExpandableListView.getPackedPositionGroup(id);
                                                               int childPosition = ExpandableListView.getPackedPositionChild(id);
 
+                                                              typeOfSelected = typeFlashcard;
+                                                              toolbarSelected();
                                                               editOriginal.setText(adapter.getChildWord(groupPosition, childPosition));
                                                               editTranslate.setText(adapter.getChildTranslate(groupPosition, childPosition));
                                                               rowId = myDb.getRowIdByWord(editOriginal.getText().toString());
@@ -257,18 +257,32 @@ public class MainActivity extends AppCompatActivity {
                                                                       fab_all.hide();
                                                                   }
 
-                                                                  if (clickedChildView != null) {
-                                                                      clickedChildView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                                                                  if (clickedView != null) {
+                                                                      clickedView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                                                                       toolbarMainActivity();
                                                                   }
-                                                                  clickedChildView = view;
-                                                                  clickedChildView.setBackgroundColor(getResources().getColor(R.color.pressed_color));
-                                                                  toolbarSelected();
+                                                                  clickedView = view;
+                                                                  clickedView.setBackgroundColor(getResources().getColor(R.color.pressed_color));
                                                                   fab.hide();
                                                               }
-                                                              return true;
                                                           }
-                                                          return false;
+                                                          if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+                                                              int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+
+                                                              typeOfSelected = typeCategory;
+                                                              toolbarSelected();
+                                                              editCategory.setText(adapter.getGroupName(groupPosition));
+                                                              rowId = myDb.getCategoryId(editCategory.getText().toString()).getInt(0);
+                                                              if (clickedView != null) {
+                                                                  clickedView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                                                                  toolbarMainActivity();
+                                                              }
+                                                              clickedView = view;
+                                                              clickedView.setBackgroundColor(getResources().getColor(R.color.pressed_color));
+                                                              fab.hide();
+
+                                                          }
+                                                          return true;
                                                       }
                                                   }
 
@@ -280,9 +294,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition,
                                         long id) {
-                if (clickedChildView != null) {
+                if (clickedView != null) {
                     fab.show();
-                    clickedChildView.setBackgroundColor(getResources().getColor(R.color.likeWhite));
+                    clickedView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                     toolbarMainActivity();
                 }
                 return false;
@@ -327,6 +341,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toolbarSelected() {
+        if (typeOfSelected.equals(typeFlashcard)) {
+            dialog.setContentView(R.layout.layout_dialog_edit_flashcard);
+            dialog.setTitle(R.string.main_activity_dialog_edit_item);
+
+            editOriginal = (EditText) dialog.findViewById(R.id.editOrginal);
+            editTranslate = (EditText) dialog.findViewById(R.id.editTranslate);
+            dialogButton = (Button) dialog.findViewById(R.id.editButton);
+        }
+        if (typeOfSelected.equals(typeCategory)) {
+            dialog.setContentView(R.layout.layout_dialog_edit_category);
+            dialog.setTitle(R.string.main_activity_dialog_edit_category);
+
+            editCategory = (EditText) dialog.findViewById(R.id.editCategory);
+            dialogButton = (Button) dialog.findViewById(R.id.editButton);
+        }
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -339,7 +369,12 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         int id = item.getItemId();
                         if (id == R.id.editRecord) {
-                            listViewEdit();
+                            if (typeOfSelected.equals(typeFlashcard)) {
+                                listViewEditFlashcard();
+                            }
+                            if (typeOfSelected.equals(typeCategory)) {
+                                listViewEditCategory();
+                            }
                         } else if (id == R.id.deleteRecord) {
                             listViewDelete();
                         } else if (id == android.R.id.home) {
@@ -352,7 +387,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.dismissPopupMenus();
     }
 
-    public void listViewEdit() {
+    public void listViewEditFlashcard() {
         editOriginal.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -380,6 +415,52 @@ public class MainActivity extends AppCompatActivity {
                             editOriginal.requestFocus();
                         } else {
                             myDb.updateAdapter(rowId, editOriginal.getText().toString(), editTranslate.getText().toString());
+                            fab.show();
+                            listViewPopulate();
+                            dialog.dismiss();
+                            toolbarMainActivity();
+                        }
+                    }
+                }
+            }
+        });
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        dialog.getWindow().setAttributes(lp);
+        dialog.show();
+    }
+
+    public void listViewEditCategory() {
+        editCategory.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                keyboard.showSoftInput(editCategory, 0);
+            }
+        }, 50);
+        editCategory.setSelection(editCategory.getText().length());
+
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (editCategory.getText().toString().isEmpty()) {
+                    alert.buildAlert(getString(R.string.alert_title), getString(R.string.alert_message_onEmptyFields), getString(R.string.button_action_ok), MainActivity.this);
+                } else {
+                    if (myDb.getCategories(rowId).getString(1).equals(editCategory.getText().toString())) {
+                        myDb.updateCategory(rowId, editCategory.getText().toString());
+                        fab.show();
+                        listViewPopulate();
+                        dialog.dismiss();
+                        toolbarMainActivity();
+                    } else {
+                        if (myDb.getCategoryValue(DBModel.CATEGORY_NAME, editCategory.getText().toString())) {
+                            alert.buildAlert(getString(R.string.alert_title), getString(R.string.alert_message_onRecordExist), getString(R.string.button_action_ok), MainActivity.this);
+                            editCategory.requestFocus();
+                        } else {
+                            myDb.updateCategory(rowId, editCategory.getText().toString());
                             fab.show();
                             listViewPopulate();
                             dialog.dismiss();

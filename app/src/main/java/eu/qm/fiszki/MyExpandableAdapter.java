@@ -72,6 +72,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
         }
         ((CheckedTextView) convertView).setText(parentItems.get(groupPosition));
         ((CheckedTextView) convertView).setChecked(isExpanded);
+        convertView.setBackgroundColor(activity.getResources().getColor(android.R.color.transparent));
         return convertView;
     }
 
@@ -133,6 +134,10 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
     public String getChildTranslate(int groupPosition, int childPosition){
         child2 = (ArrayList<String>) childtems2.get(groupPosition);
         return child2.get(childPosition);
+    }
+
+    public String getGroupName(int groupPosition){
+        return parentItems.get(groupPosition);
     }
 }
 
