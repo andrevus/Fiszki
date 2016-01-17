@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     static public ImageView emptyDBImage;
     static public TextView emptyDBText;
     static public Context context;
-    static public ListView listView;
     static public FloatingActionButton fab;
     static public Dialog dialog;
     static public EditText editOriginal;
@@ -66,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     static public ImageView addNewWord;
     static public FABToolbarLayout fab_all;
     static public ExpandableListView expandableList;
+    static public ListView listView;
     static public View clickedView;
     static public String typeOfSelected;
     static public String typeCategory = "Category";
@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         settings.pendingIntent = PendingIntent.getBroadcast(this, 0, settings.alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         settings.manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         expandableList = (ExpandableListView) findViewById(R.id.list);
+        listView = (ListView) findViewById(R.id.uncategoryList);
         openDataBase.openDB(myDb);
 
         toolbarMainActivity();
@@ -213,6 +214,10 @@ public class MainActivity extends AppCompatActivity {
         expandableList.setClickable(true);
         expandableList.setEmptyView(null);
         expandableList.setAdapter(adapter);
+        if (myDb.getAllRows().getCount() > 0) {
+            ItemAdapter flashCardList = new ItemAdapter(this, myDb.getAllRows(), myDb, this);
+            listView.setAdapter(flashCardList);
+        }
 
     }
 

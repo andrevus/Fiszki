@@ -60,7 +60,6 @@
 
 
 
-
     <com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
         android:id="@+id/fab_all"
         android:layout_width="match_parent"
@@ -74,12 +73,24 @@
         app:containerId="@+id/fabtoolbar_container"
         app:fabToolbarId="@+id/fabtoolbar_toolbar">
 
-        <ExpandableListView
-            android:layout_marginTop="?attr/actionBarSize"
-            android:id="@+id/list"
-            android:layout_height="match_parent"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:groupIndicator="@null" />
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true">
+            <ExpandableListView
+                android:layout_marginTop="?attr/actionBarSize"
+                android:id="@+id/list"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:groupIndicator="@null"
+                android:layout_alignParentBottom="false" />
+            <ListView
+                android:id="@+id/uncategoryList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/list" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@id/fabtoolbar_container"
