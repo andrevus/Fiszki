@@ -49,6 +49,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
             textWord.setTextSize(25f);
             textWord.setText(R.string.main_activity_empty_group);
             textTranslation.setText("");
+            convertView.setClickable(true);
         } else {
             if (convertView == null) {
                 convertView = inflater.inflate(R.layout.group, null);
@@ -59,6 +60,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
             textWord.setTextSize(20f);
             textTranslation.setText(child2.get(childPosition));
             textWord.setText(child1.get(childPosition));
+            convertView.setClickable(false);
         }
         convertView.setBackgroundColor(activity.getResources().getColor(android.R.color.transparent));
         return convertView;

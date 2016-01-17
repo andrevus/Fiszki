@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     static public String typeFlashcard = "Flashcard";
     List<String> child = new ArrayList<String>();
     ExpandableListCleaner elc;
-    Cursor deletedRow;
+    Cursor deletedRow,deletedCategory;
     private ArrayList<String> parentItems = new ArrayList<String>();
     private ArrayList<Object> childWord = new ArrayList<Object>();
     private ArrayList<Object> childTranslation = new ArrayList<Object>();
@@ -201,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void listViewPopulate() {
-        sync();
         parentItems.clear();
         childWord.clear();
         childTranslation.clear();
@@ -246,6 +245,13 @@ public class MainActivity extends AppCompatActivity {
                                                               int groupPosition = ExpandableListView.getPackedPositionGroup(id);
                                                               int childPosition = ExpandableListView.getPackedPositionChild(id);
 
+                                                              dialog.setContentView(R.layout.layout_dialog_edit_flashcard);
+                                                              dialog.setTitle(R.string.main_activity_dialog_edit_item);
+
+                                                              editOriginal = (EditText) dialog.findViewById(R.id.editOrginal);
+                                                              editTranslate = (EditText) dialog.findViewById(R.id.editTranslate);
+                                                              dialogButton = (Button) dialog.findViewById(R.id.editButton);
+
                                                               typeOfSelected = typeFlashcard;
                                                               toolbarSelected();
                                                               editOriginal.setText(adapter.getChildWord(groupPosition, childPosition));
@@ -259,7 +265,6 @@ public class MainActivity extends AppCompatActivity {
 
                                                                   if (clickedView != null) {
                                                                       clickedView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                                                                      toolbarMainActivity();
                                                                   }
                                                                   clickedView = view;
                                                                   clickedView.setBackgroundColor(getResources().getColor(R.color.pressed_color));
@@ -269,13 +274,18 @@ public class MainActivity extends AppCompatActivity {
                                                           if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
                                                               int groupPosition = ExpandableListView.getPackedPositionGroup(id);
 
+                                                              dialog.setContentView(R.layout.layout_dialog_edit_category);
+                                                              dialog.setTitle(R.string.main_activity_dialog_edit_category);
+
+                                                              editCategory = (EditText) dialog.findViewById(R.id.editCategory);
+                                                              dialogButton = (Button) dialog.findViewById(R.id.editButton);
+
                                                               typeOfSelected = typeCategory;
                                                               toolbarSelected();
                                                               editCategory.setText(adapter.getGroupName(groupPosition));
                                                               rowId = myDb.getCategoryId(editCategory.getText().toString()).getInt(0);
                                                               if (clickedView != null) {
                                                                   clickedView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                                                                  toolbarMainActivity();
                                                               }
                                                               clickedView = view;
                                                               clickedView.setBackgroundColor(getResources().getColor(R.color.pressed_color));
@@ -341,21 +351,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toolbarSelected() {
-        if (typeOfSelected.equals(typeFlashcard)) {
-            dialog.setContentView(R.layout.layout_dialog_edit_flashcard);
-            dialog.setTitle(R.string.main_activity_dialog_edit_item);
 
-            editOriginal = (EditText) dialog.findViewById(R.id.editOrginal);
-            editTranslate = (EditText) dialog.findViewById(R.id.editTranslate);
-            dialogButton = (Button) dialog.findViewById(R.id.editButton);
-        }
-        if (typeOfSelected.equals(typeCategory)) {
-            dialog.setContentView(R.layout.layout_dialog_edit_category);
-            dialog.setTitle(R.string.main_activity_dialog_edit_category);
-
-            editCategory = (EditText) dialog.findViewById(R.id.editCategory);
-            dialogButton = (Button) dialog.findViewById(R.id.editButton);
-        }
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -376,8 +372,14 @@ public class MainActivity extends AppCompatActivity {
                                 listViewEditCategory();
                             }
                         } else if (id == R.id.deleteRecord) {
-                            listViewDelete();
+                            if (typeOfSelected.equals(typeFlashcard)) {
+                                listViewDeleteFlashcard();
+                            }
+                            if (typeOfSelected.equals(typeCategory)) {
+                                listViewDeleteCategory();
+                            }
                         } else if (id == android.R.id.home) {
+                            clickedView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                             fab.show();
                             toolbarMainActivity();
                         }
@@ -479,7 +481,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void listViewDelete() {
+    public void listViewDeleteFlashcard() {
         final AlertDialog alertDialog;
         alertDialog = new AlertDialog.Builder(context).create();
         alertDialog.setTitle(getString(R.string.alert_title));
@@ -489,7 +491,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 deletedRow = myDb.getRow(rowId);
-                myDb.deleteRecord(rowId);
+                myDb.deleteFlashcardById(rowId);
                 if (myDb.getAllRows().getCount() > 0) {
                     listViewPopulate();
                     toolbarMainActivity();
@@ -542,7 +544,71 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void sync() {
+    public void listViewDeleteCategory() {
+        final AlertDialog alertDialog;
+        alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog.setTitle(getString(R.string.alert_title));
+        alertDialog.setCancelable(false);
+        alertDialog.setMessage(Html.fromHtml(getString(R.string.alert_delete_record)));
+        alertDialog.setButton(getString(R.string.button_action_yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deletedCategory = myDb.getCategories(rowId);
+                deletedRow = myDb.getRowByCategory(rowId);
+                myDb.deleteCategory(rowId);
+                myDb.deleteFlashcardByCategoryId(rowId);
+                if (myDb.getAllRows().getCount() > 0) {
+                    listViewPopulate();
+                    toolbarMainActivity();
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(android.R.id.content), getString(R.string.snackbar_returnword_message), Snackbar.LENGTH_LONG)
+                            .setAction(getString(R.string.snackbar_returnword_button), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    myDb.insertCategoryWithId(deletedCategory.getInt(0), deletedCategory.getString(1));
+                                    deletedRow.moveToFirst();
+                                    do{
+                                        myDb.insertRowWithId(deletedRow.getInt(0),deletedRow.getString(1),deletedRow.getString(2),deletedRow.getInt(3), deletedRow.getInt(4));
+                                    }while(deletedRow.moveToNext());
+                                    listViewPopulate();
+                                }
+                            });
+                    snackbar.show();
+                    fab.setVisibility(View.VISIBLE);
+                } else {
+                    emptyDBImage.setVisibility(View.VISIBLE);
+                    emptyDBText.setVisibility(View.VISIBLE);
+                    listView.setVisibility(View.INVISIBLE);
+                    fab.show();
+                    myDb.updateRow(settings.notificationStatus, 0);
+                    myDb.updateRow(settings.notificationPosition, 0);
+                    alarm.close(settings.manager, context, settings.pendingIntent);
+                    toolbarMainActivity();
+                    Snackbar snackbar = Snackbar
+                            .make(findViewById(android.R.id.content), getString(R.string.snackbar_returnword_message), Snackbar.LENGTH_LONG)
+                            .setAction(getString(R.string.snackbar_returnword_button), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    myDb.insertRowWithId(deletedRow.getInt(0), deletedRow.getString(1),
+                                            deletedRow.getString(2), deletedRow.getInt(3), deletedRow.getInt(4));
+                                    emptyDBImage.setVisibility(View.INVISIBLE);
+                                    emptyDBText.setVisibility(View.INVISIBLE);
+                                    listView.setVisibility(View.VISIBLE);
+                                    listViewPopulate();
+                                }
+                            });
+                    snackbar.show();
+                    fab.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        alertDialog.setButton2(getString(R.string.button_action_no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
 
     }
 

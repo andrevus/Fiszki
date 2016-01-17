@@ -36,6 +36,13 @@ public class DBAdapter {
         return db.insert(DBModel.CATEGORY_TABLE, null, initialValues);
     }
 
+    public long insertCategoryWithId(int id, String name) {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(DBModel.CATEGORY_ROWID, id);
+        initialValues.put(DBModel.CATEGORY_NAME, name);
+        return db.insert(DBModel.CATEGORY_TABLE, null, initialValues);
+    }
+
     public long deleteCategory(int id) {
         String where = DBModel.CATEGORY_ROWID + " = " + id;
         return db.delete(DBModel.CATEGORY_TABLE, where, null);
@@ -143,8 +150,13 @@ public class DBAdapter {
         return db.update(DBModel.DATABASE_TABLE, values, DBModel.KEY_ROWID + "= " + "'" + id + "'", null);
     }
 
-    public long deleteRecord(int id) {
+    public long deleteFlashcardById(int id) {
         String where = DBModel.KEY_ROWID + " = " + id;
+        return db.delete(DBModel.DATABASE_TABLE, where, null);
+    }
+
+    public long deleteFlashcardByCategoryId(int categoryId) {
+        String where = DBModel.KEY_CATEGORY + " = " + categoryId;
         return db.delete(DBModel.DATABASE_TABLE, where, null);
     }
 
