@@ -123,14 +123,15 @@ public class MainActivity extends AppCompatActivity {
     public void setCategories() {
         int x = 0;
         Cursor c = myDb.getAllCategories();
-        if (c.getCount() > 0) {
+        c.moveToNext();
+        if (c.getCount() > 1) {
             do {
                 parentItems.add(c.getString(1));
                 childWord.add(setWord(c.getInt(0)));
                 childTranslation.add(setTranslation(c.getInt(0)));
                 c.moveToNext();
                 x++;
-            } while (x != c.getCount());
+            } while (x != c.getCount() - 1 );
         }
     }
 
@@ -215,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
         expandableList.setEmptyView(null);
         expandableList.setAdapter(adapter);
         if (myDb.getAllRows().getCount() > 0) {
-            ItemAdapter flashCardList = new ItemAdapter(this, myDb.getAllRows(), myDb, this);
+            ItemAdapter flashCardList = new ItemAdapter(this, myDb.getRowByCategory(0), myDb, this);
             listView.setAdapter(flashCardList);
         }
 

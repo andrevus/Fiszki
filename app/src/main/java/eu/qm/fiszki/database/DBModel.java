@@ -64,8 +64,13 @@ public class DBModel {
 
     public static final String FILL_SETTINGS_SQL =
             "INSERT INTO "+ SETTINGS_TABLE +" VALUES(1, 'notification', 0)";
+
     public static final String SECOND_FILL_SETTINGS_SQL =
             "INSERT INTO "+ SETTINGS_TABLE +" VALUES(2, 'notification_time', 0)";
+
     public static final String THIRD_Fill_SETTINGS_SQL =
             "INSERT INTO "+SETTINGS_TABLE +" VALUES(3, 'cursorPosition', 0)";
+
+    public static final String NOCATEGORY_ROW =
+            "INSERT INTO "+ CATEGORY_TABLE +" VALUES(0, 'No category')";
 }

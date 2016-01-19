@@ -265,11 +265,13 @@ public class DBAdapter {
             _db.execSQL(DBModel.FILL_SETTINGS_SQL);
             _db.execSQL(DBModel.SECOND_FILL_SETTINGS_SQL);
             _db.execSQL(DBModel.THIRD_Fill_SETTINGS_SQL);
+            _db.execSQL(DBModel.NOCATEGORY_ROW);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase _db, int oldVersion, int newVersion) {
             _db.execSQL(DBModel.DATABASE_CREATE_CATEGORY);
+            _db.execSQL(DBModel.NOCATEGORY_ROW);
             _db.execSQL("ALTER TABLE " + DBModel.DATABASE_TABLE +
                     " ADD COLUMN " + DBModel.KEY_CATEGORY + " INTEGER, FOREIGN KEY( " + DBModel.KEY_CATEGORY + ") REFERENCES "
                     + DBModel.CATEGORY_TABLE + " (" + DBModel.CATEGORY_ROWID + ")");
