@@ -28,6 +28,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout;
 
@@ -72,11 +73,12 @@ public class MainActivity extends AppCompatActivity {
     static public String typeFlashcard = "Flashcard";
     List<String> child = new ArrayList<String>();
     ExpandableListCleaner elc;
-    Cursor deletedRow,deletedCategory;
+    Cursor deletedRow, deletedCategory;
     private ArrayList<String> parentItems = new ArrayList<String>();
     private ArrayList<Object> childWord = new ArrayList<Object>();
     private ArrayList<Object> childTranslation = new ArrayList<Object>();
     private MyExpandableAdapter adapter;
+    private ItemAdapter editedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         toolbarMainActivity();
         listViewSelect();
 
+        listView.setClickable(true);
         if (myDb.getAllRows().getCount() > 0 || myDb.getAllCategories().getCount() > 0) {
             emptyDBImage.setVisibility(View.INVISIBLE);
             emptyDBText.setVisibility(View.INVISIBLE);
@@ -117,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
             emptyDBText.setVisibility(View.VISIBLE);
             expandableList.setVisibility(View.INVISIBLE);
         }
+
+
 
     }
 
@@ -131,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 childTranslation.add(setTranslation(c.getInt(0)));
                 c.moveToNext();
                 x++;
-            } while (x != c.getCount() - 1 );
+            } while (x != c.getCount() - 1);
         }
     }
 
@@ -318,6 +323,41 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                dialog.setContentView(R.layout.layout_dialog_edit_flashcard);
+                dialog.setTitle(R.string.main_activity_dialog_edit_item);
+
+                editOriginal = (EditText) dialog.findViewById(R.id.editOrginal);
+                editTranslate = (EditText) dialog.findViewById(R.id.editTranslate);
+                dialogButton = (Button) dialog.findViewById(R.id.editButton);
+
+                typeOfSelected = typeFlashcard;
+                toolbarSelected();
+                editedItem = (ItemAdapter) parent.getAdapter();
+                editOriginal.setText(editedItem.getCursor().getString(1));
+                editTranslate.setText(editedItem.getCursor().getString(2));
+                rowId = myDb.getRowIdByWord(editOriginal.getText().toString());
+
+                if (rowId > -1) {
+                    if (fab_all.isToolbar()) {
+                        fab_all.hide();
+                    }
+
+                    if (clickedView != null) {
+                        clickedView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    }
+                    clickedView = view;
+                    clickedView.setBackgroundColor(getResources().getColor(R.color.pressed_color));
+                    fab.hide();
+                }
+
+                return false;
+            }
+        });
     }
 
     public void toolbarMainActivity() {
@@ -357,7 +397,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toolbarSelected() {
-
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -573,9 +612,9 @@ public class MainActivity extends AppCompatActivity {
                                 public void onClick(View v) {
                                     myDb.insertCategoryWithId(deletedCategory.getInt(0), deletedCategory.getString(1));
                                     deletedRow.moveToFirst();
-                                    do{
-                                        myDb.insertRowWithId(deletedRow.getInt(0),deletedRow.getString(1),deletedRow.getString(2),deletedRow.getInt(3), deletedRow.getInt(4));
-                                    }while(deletedRow.moveToNext());
+                                    do {
+                                        myDb.insertRowWithId(deletedRow.getInt(0), deletedRow.getString(1), deletedRow.getString(2), deletedRow.getInt(3), deletedRow.getInt(4));
+                                    } while (deletedRow.moveToNext());
                                     listViewPopulate();
                                 }
                             });
