@@ -28,7 +28,6 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout;
 
@@ -120,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
             emptyDBText.setVisibility(View.VISIBLE);
             expandableList.setVisibility(View.INVISIBLE);
         }
-
 
 
     }

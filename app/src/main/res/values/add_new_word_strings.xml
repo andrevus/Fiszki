@@ -7,5 +7,6 @@
     <string name="add_new_word_word">Word</string>
     <string name="add_new_word_info">Translation</string>
     <string name="add_new_word_category">Category</string>
+    <string name="add_new_word_no_category">No Category</string>
 
 </resources>

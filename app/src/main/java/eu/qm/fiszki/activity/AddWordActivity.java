@@ -22,6 +22,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import eu.qm.fiszki.AlarmReceiver;
@@ -149,9 +151,17 @@ public class AddWordActivity extends AppCompatActivity {
     });
     }
     private void loadSpinnerData() {
-        List<String> lables = myDb.getAllLabels();
+        Cursor c = myDb.getAllCategories();
+        List<String> list = new ArrayList<String>();
+        do {
+            if(c.getString(1).equals("No category")){
+                list.add(getString(R.string.add_new_word_no_category));
+            }else {
+                list.add(c.getString(1));
+            }
+        }while(c.moveToNext());
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, lables);
+                android.R.layout.simple_spinner_item,list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
     }
@@ -160,7 +170,11 @@ public class AddWordActivity extends AppCompatActivity {
         int categoryId;
         String categoryNameFromSpinner = spinner.getSelectedItem().toString();
         Cursor c = myDb.getCategoryId(categoryNameFromSpinner);
-        categoryId = c.getInt(0);
+        if(c.getCount()>0) {
+            categoryId = c.getInt(0);
+        }else{
+            categoryId = 0;
+        }
         return categoryId;
     }
 }
