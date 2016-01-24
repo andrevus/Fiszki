@@ -40,24 +40,12 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
         TextView textWord = null;
         TextView textTranslation = null;
         if (child1.get(childPosition).equals("")) {
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.group, null);
-            }
-            textTranslation = (TextView) convertView.findViewById(R.id.translation);
-            textWord = (TextView) convertView.findViewById(R.id.word);
-            textWord.setGravity(Gravity.CENTER);
-            textWord.setTextSize(25f);
-            textWord.setText(R.string.main_activity_empty_group);
-            textTranslation.setText("");
+            convertView = inflater.inflate(R.layout.empty_group, null);
             convertView.setClickable(true);
         } else {
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.group, null);
-            }
+            convertView = inflater.inflate(R.layout.group, null);
             textTranslation = (TextView) convertView.findViewById(R.id.translation);
             textWord = (TextView) convertView.findViewById(R.id.word);
-            textWord.setGravity(Gravity.START);
-            textWord.setTextSize(20f);
             textTranslation.setText(child2.get(childPosition));
             textWord.setText(child1.get(childPosition));
             convertView.setClickable(false);

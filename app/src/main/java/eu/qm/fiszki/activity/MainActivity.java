@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     static public String typeCategory = "Category";
     static public String typeFlashcard = "Flashcard";
     List<String> child = new ArrayList<String>();
-    ExpandableListCleaner elc;
+
     Cursor deletedRow, deletedCategory;
     private ArrayList<String> parentItems = new ArrayList<String>();
     private ArrayList<Object> childWord = new ArrayList<Object>();
@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         settings = new SettingsActivity();
-        elc = new ExpandableListCleaner();
         alarm = new AlarmReceiver();
         alert = new Alert();
         openDataBase = new DBStatus();
