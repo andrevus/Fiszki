@@ -221,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
             ItemAdapter flashCardList = new ItemAdapter(this, myDb.getRowByCategory(0), myDb, this);
             listView.setAdapter(flashCardList);
         }
-
     }
 
     public void listViewSelect() {
@@ -352,7 +351,18 @@ public class MainActivity extends AppCompatActivity {
                     fab.hide();
                 }
 
-                return false;
+                return true;
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (clickedView != null) {
+                    fab.show();
+                    clickedView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    toolbarMainActivity();
+                }
             }
         });
     }
