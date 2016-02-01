@@ -1,15 +1,15 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:2:1-61:12
-	xmlns:android
-		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:2:11-69
+ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:2:1-56:12
 	package
-		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:3:5-27
+		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:3:5-34
 		INJECTED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml
 		INJECTED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml
 		INJECTED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:2:11-69
 	android:versionCode
 		INJECTED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml
 		INJECTED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml
@@ -18,17 +18,14 @@ ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:5:5-66
 	android:name
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:5:22-63
 application
-ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:7:5-59:19
-MERGED from [com.android.support:appcompat-v7:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:22:5-20
-MERGED from [com.android.support:support-v4:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:22:5-20
-MERGED from [com.android.support:support-v4:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:22:5-20
-MERGED from [com.android.support:design:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\design\23.0.1\AndroidManifest.xml:22:5-20
-MERGED from [com.android.support:support-v4:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:22:5-20
-MERGED from [com.android.support:appcompat-v7:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:22:5-20
-MERGED from [com.android.support:support-v4:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:22:5-20
-MERGED from [com.google.android.gms:play-services-appindexing:8.1.0] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appindexing\8.1.0\AndroidManifest.xml:19:5-20
-MERGED from [com.google.android.gms:play-services-basement:8.1.0] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\8.1.0\AndroidManifest.xml:20:5-24:19
-MERGED from [com.android.support:support-v4:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:22:5-20
+ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:7:5-54:19
+MERGED from [com.android.support:appcompat-v7:23.1.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.1.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:design:23.1.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\design\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:appcompat-v7:23.1.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.1.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.1.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.1.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:22:5-20
 	android:screenOrientation
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:11:9-45
 	android:label
@@ -39,7 +36,7 @@ MERGED from [com.android.support:support-v4:23.0.1] D:\RST\Fiszki\app\build\inte
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:9:9-43
 	android:theme
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:12:9-40
-activity#eu.qm.fiszki.activity.AddWordActivity
+activity#fiszki.qm.eu.fiszki.Activity.AddWordActivity
 ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:13:9-16:52
 	android:screenOrientation
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:16:13-49
@@ -47,17 +44,17 @@ ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:13:9-16:52
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:15:13-55
 	android:name
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:14:13-53
-activity#eu.qm.fiszki.activity.CheckActivity
+activity#fiszki.qm.eu.fiszki.Activity.CheckActivity
 ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:17:9-21:52
 	android:screenOrientation
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:21:13-49
 	android:label
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:19:13-57
-	android:name
-		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:18:13-51
 	android:launchMode
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:20:13-48
-receiver#eu.qm.fiszki.AlarmReceiver
+	android:name
+		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:18:13-51
+receiver#fiszki.qm.eu.fiszki.AlarmReceiver
 ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:23:9-29:20
 	android:exported
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:25:13-37
@@ -69,7 +66,7 @@ action#android.intent.action.BOOT_COMPLETED
 ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:27:17-79
 	android:name
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:27:25-76
-activity#eu.qm.fiszki.activity.ExamModeActivity
+activity#fiszki.qm.eu.fiszki.Activity.ExamModeActivity
 ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:31:9-34:52
 	android:screenOrientation
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:34:13-49
@@ -77,7 +74,7 @@ ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:31:9-34:52
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:33:13-52
 	android:name
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:32:13-54
-activity#eu.qm.fiszki.activity.MainActivity
+activity#fiszki.qm.eu.fiszki.Activity.MainActivity
 ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:35:9-45:20
 	android:screenOrientation
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:38:13-49
@@ -97,7 +94,7 @@ category#android.intent.category.LAUNCHER
 ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:43:17-77
 	android:name
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:43:27-74
-activity#eu.qm.fiszki.activity.SettingsActivity
+activity#fiszki.qm.eu.fiszki.Activity.SettingsActivity
 ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:46:9-49:52
 	android:screenOrientation
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:49:13-49
@@ -105,33 +102,24 @@ ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:46:9-49:52
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:48:13-51
 	android:name
 		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:47:13-54
-meta-data#com.google.android.gms.version
-ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:51:9-53:69
-MERGED from [com.google.android.gms:play-services-basement:8.1.0] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\8.1.0\AndroidManifest.xml:21:9-23:69
-	android:name
-		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:52:13-58
-	android:value
-		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:53:13-66
-activity#eu.qm.fiszki.activity.LearningModeActivity
-ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:55:9-58:52
+activity#fiszki.qm.eu.fiszki.Activity.LearningModeActivity
+ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:50:9-53:52
 	android:screenOrientation
-		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:58:13-49
+		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:53:13-49
 	android:label
-		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:57:13-56
+		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:52:13-56
 	android:name
-		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:56:13-58
+		ADDED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml:51:13-58
 uses-sdk
 INJECTED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
-MERGED from [com.android.support:appcompat-v7:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:support-v4:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:support-v4:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:design:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\design\23.0.1\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:support-v4:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:appcompat-v7:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:support-v4:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:20:5-43
-MERGED from [com.google.android.gms:play-services-appindexing:8.1.0] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appindexing\8.1.0\AndroidManifest.xml:18:5-42
-MERGED from [com.google.android.gms:play-services-basement:8.1.0] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\8.1.0\AndroidManifest.xml:18:5-42
-MERGED from [com.android.support:support-v4:23.0.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:appcompat-v7:23.1.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.1.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:design:23.1.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\design\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:appcompat-v7:23.1.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.1.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:23.1.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.1.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.1.1] D:\RST\Fiszki\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\AndroidManifest.xml:20:5-43
 	android:targetSdkVersion
 		INJECTED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml
 		INJECTED from D:\RST\Fiszki\app\src\main\AndroidManifest.xml
