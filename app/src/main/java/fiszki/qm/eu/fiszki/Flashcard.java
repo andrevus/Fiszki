@@ -1,14 +1,6 @@
 package fiszki.qm.eu.fiszki;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.util.Log;
-
-import java.util.ArrayList;
-
-import fiszki.qm.eu.fiszki.database.DBAdapter;
-import fiszki.qm.eu.fiszki.database.DBModel;
-import fiszki.qm.eu.fiszki.database.DBStatus;
 
 /**
  * Created by mBoiler on 30.01.2016.
@@ -63,5 +55,4 @@ public class Flashcard {
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
-
 }

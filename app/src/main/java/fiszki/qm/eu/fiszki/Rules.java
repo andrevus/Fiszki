@@ -1,4 +1,4 @@
-package fiszki.qm.eu.fiszki.database;
+package fiszki.qm.eu.fiszki;
 
 import android.app.Activity;
 import android.widget.EditText;

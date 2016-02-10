@@ -19,7 +19,7 @@ import fiszki.qm.eu.fiszki.FlashcardsManagment;
 import fiszki.qm.eu.fiszki.R;
 import fiszki.qm.eu.fiszki.database.DBAdapter;
 import fiszki.qm.eu.fiszki.database.DBStatus;
-import fiszki.qm.eu.fiszki.database.Rules;
+import fiszki.qm.eu.fiszki.Rules;
 
 public class AddWordActivity extends AppCompatActivity {
 

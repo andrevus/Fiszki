@@ -111,4 +111,13 @@ public class FlashcardsManagment {
 
         return fiszka;
     }
+
+    public void cursorToFlashcard(Cursor cursor, Flashcard fiszka){
+        fiszka.setId(cursor.getInt(0));
+        fiszka.setOrginalWord(cursor.getString(1));
+        fiszka.setTranslationWord(cursor.getString(2));
+        fiszka.setPriority(cursor.getInt(3));
+        fiszka.setCategory(cursor.getString(4));
+
+    }
 }
